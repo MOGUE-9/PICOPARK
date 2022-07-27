@@ -34,15 +34,22 @@ void Main::Update()
 
 void Main::LateUpdate()
 {
-	if (block->Intersect(player->col))
+	if (player->col->Intersect(block))
 	{
+		player->onBlock(block->GetWorldPos().y);
+
 		//블럭 밟고 있을 때 돌려줄 값 :: 계속 블럭의 윗쪽에 고정되어 있어야 함
 
-		//player->onBlock(block->GetWorldPos().y);
-
-		player->col->SetWorldPosY(block->GetWorldPos().y);
-		player->Update();
+		//if (player->col->GetWorldPos().y < block->GetWorldPos().y)
+		//{
+		//	player->col->SetWorldPosY(-50.0f);
+		//}
 	}
+	//else if (!block->Intersect(player->col->GetWorldPivot()))
+	//{
+	//	player->isOn = false;
+	//}
+	player->Update();
 
 }
 

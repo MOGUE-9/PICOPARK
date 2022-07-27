@@ -21,7 +21,6 @@ private:
 	//현재상태
 	CATSTAT		stat;
 	
-	
 	float		scalar;
 	float		gravity;
 
@@ -29,6 +28,9 @@ public:
 	//충돌블럭
 	ObRect* col = new ObRect();
 
+	//블럭
+	float		blockOn;
+	bool		isOn;
 
 public:
 	PicoCat();

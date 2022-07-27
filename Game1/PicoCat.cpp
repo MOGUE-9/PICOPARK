@@ -9,6 +9,7 @@ PicoCat::PicoCat()
 	col->pivot = OFFSET_B;
 	col->SetWorldPos(Vector2(0.0f, 0.0f));
 	col->scale = Vector2(50.0f, 50.0f);
+	col->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
 	stand->SetParentRT(*col);
 	stand->visible = true;
@@ -34,7 +35,7 @@ PicoCat::PicoCat()
 	push->maxFrame.x = 8;
 	push->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 
-	scalar = 200.0f;
+	scalar = 100.0f;
 	gravity = 50.0f;
 }
 
@@ -49,19 +50,92 @@ PicoCat::~PicoCat()
 
 void PicoCat::Update()
 {
-	gravity += 50.0f;
+
+	gravity += 150.0f * DELTA;
 	//gravity = Utility::Saturate(gravity, 0.0f, 500.0f);
 
 	//계속 vv 아래로 중력받음 (바닥 뚫리면 떨어짐)
 	col->MoveWorldPos(DOWN * gravity * DELTA);
 
+	if (isOn)
+	{
+		col->SetLocalPosY(blockOn);
+	}
 
+	//오른쪽으로
+	if (INPUT->KeyPress(VK_RIGHT)|| INPUT->KeyPress('D'))
+	{
+		col->MoveWorldPos(RIGHT * scalar * DELTA);
+
+		stand->visible = false;
+		jump->visible = false;
+
+		walk->visible = true;
+
+		stand->reverseLR = false;
+		walk->reverseLR = false;
+	}
+	//왼쪽으로
+	else if (INPUT->KeyPress(VK_LEFT) || INPUT->KeyPress('S'))
+	{
+		col->MoveWorldPos(LEFT * scalar * DELTA);
+
+		stand->visible = false;
+		jump->visible = false;
+
+		walk->visible = true;
+
+		stand->reverseLR = true;
+		walk->reverseLR = true;
+	}
+
+	//움직임 키 뗐을 때
+	if (INPUT->KeyUp(VK_RIGHT) || INPUT->KeyUp('D'))
+	{
+		stand->visible = false;
+		walk->visible = false;
+
+		jump->visible = true;
+
+		jump->reverseLR = false;
+		stand->reverseLR = false;
+		walk->reverseLR = false;
+	}
+	else if (INPUT->KeyUp(VK_LEFT) || INPUT->KeyUp('S'))
+	{
+		stand->visible = false;
+		walk->visible = false;
+
+		jump->visible = true;
+
+		jump->reverseLR = true;
+		stand->reverseLR = true;
+		walk->reverseLR = true;
+	}
+
+	//문 앞 아닐때만 점프 << 근데 이거 이렇게 하느니 그냥 ... 문 여는 키를 따로 주는게 나을듯
+	if (INPUT->KeyDown(VK_UP) || INPUT->KeyDown('W'))
+	{
+		isOn = false;
+		gravity = -300.0f;
+
+		//stand 방향과 같게 좌우반전 해주기
+		//if (jump->reverseLR != stand->reverseLR) jump->reverseLR = stand->reverseLR;
+
+		stand->visible = false;
+		walk->visible = false;
+
+		jump->visible = true;
+	}
+
+
+#if 0 
 	//가만히
 	if (stat == CATSTAT::STAND)
 	{
 		//가만->걷기
 		//오른쪽으로
-		if (INPUT->KeyDown(VK_RIGHT)|| INPUT->KeyDown('D'))
+		if (INPUT->KeyDown(VK_RIGHT) || INPUT->KeyDown('D'))
 		{
 			stat = CATSTAT::WALK;
 			stand->visible = false;
@@ -102,7 +176,6 @@ void PicoCat::Update()
 		}
 
 	}
-#if 0 
 	//걷기0
 	else if (stat == CATSTAT::WALK)
 	{
@@ -223,5 +296,6 @@ void PicoCat::Render()
 
 void PicoCat::onBlock(float obPosY)
 {
-	col->SetWorldPosY(obPosY);
+	blockOn = obPosY;
+	isOn = true;
 }
