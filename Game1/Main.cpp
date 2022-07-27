@@ -3,6 +3,7 @@
 
 void Main::Init()
 {
+	//·ê
 	block = new ObRect();
 	block->scale = Vector2(50.0f, 50.0f);
 
