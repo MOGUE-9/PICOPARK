@@ -5,7 +5,11 @@ void Main::Init()
 {
 	//룰
 	block = new ObRect();
-	block->scale = Vector2(50.0f, 50.0f);
+	block->collider = COLLIDER::RECT;
+	block->pivot = OFFSET_T;
+	block->SetWorldPosY(-50.0f);
+	block->color = Color(1.0f, 1.0f, 0.0f, 1.0f);
+	block->scale = Vector2(1000.0f, 50.0f);
 
 	player = new PicoCat();
 }
@@ -17,14 +21,29 @@ void Main::Release()
 
 void Main::Update()
 {
+	//ImGuiColorEditFlags
+	ImGui::ColorEdit4("d", (float*)&block->color, ImGuiColorEditFlags_PickerHueWheel);
+
 	block->Update();
 	player->Update();
+
+	cout << block->GetWorldPos().y << endl;
+	cout << player->col->GetWorldPos().y << endl;
 
 }
 
 void Main::LateUpdate()
 {
-	
+	if (block->Intersect(player->col))
+	{
+		//블럭 밟고 있을 때 돌려줄 값 :: 계속 블럭의 윗쪽에 고정되어 있어야 함
+
+		//player->onBlock(block->GetWorldPos().y);
+
+		player->col->SetWorldPosY(block->GetWorldPos().y);
+		player->Update();
+	}
+
 }
 
 void Main::Render()

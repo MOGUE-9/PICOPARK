@@ -2,33 +2,40 @@
 
 PicoCat::PicoCat()
 {
-	// col 에 parent 걸었니
-	// reverseLR = false; 가 기본 (오른쪽 방향가기)
+	// col 에 parent 걸었는지 확인
+	// reverseLR = false; 가 기본 (오른쪽 방향)
 	col->isFilled = false;
+	col->collider = COLLIDER::RECT;
+	col->pivot = OFFSET_B;
+	col->SetWorldPos(Vector2(0.0f, 0.0f));
 	col->scale = Vector2(50.0f, 50.0f);
 
 	stand->SetParentRT(*col);
 	stand->visible = true;
+	stand->pivot = OFFSET_B;
 	stand->scale = Vector2(50.0f, 50.0f);
 
 	walk->SetParentRT(*col);
 	walk->visible = false;
+	walk->pivot = OFFSET_B;
 	walk->scale = Vector2(50.0f, 50.0f);
 	walk->maxFrame.x = 8;
 	walk->ChangeAnim(ANIMSTATE::LOOP,0.1f);
 
 	jump->SetParentRT(*col);
 	jump->visible = false;
+	jump->pivot = OFFSET_B;
 	jump->scale = Vector2(50.0f, 50.0f);
 
 	push->SetParentRT(*col);
 	push->visible = false;
+	push->pivot = OFFSET_B;
 	push->scale = Vector2(50.0f, 50.0f);
 	push->maxFrame.x = 8;
 	push->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 
-	scalar = 100.0f;
-	gravity = 100.0f;
+	scalar = 200.0f;
+	gravity = 50.0f;
 }
 
 PicoCat::~PicoCat()
@@ -42,10 +49,11 @@ PicoCat::~PicoCat()
 
 void PicoCat::Update()
 {
-	gravity += 100.0f;
+	gravity += 50.0f;
+	//gravity = Utility::Saturate(gravity, 0.0f, 500.0f);
 
 	//계속 vv 아래로 중력받음 (바닥 뚫리면 떨어짐)
-	//col->MoveWorldPos(UP * scalar + DOWN * gravity * DELTA);
+	col->MoveWorldPos(DOWN * gravity * DELTA);
 
 
 	//가만히
@@ -94,6 +102,7 @@ void PicoCat::Update()
 		}
 
 	}
+#if 0 
 	//걷기0
 	else if (stat == CATSTAT::WALK)
 	{
@@ -147,6 +156,7 @@ void PicoCat::Update()
 	//점프
 	else if (stat == CATSTAT::JUMP)
 	{
+		//gravity = -700.0f;
 		//점프하면서 움직이기(키 입력 방향 따라 좌,우로)
 		if (INPUT->KeyPress(VK_RIGHT) || INPUT->KeyPress('D'))
 		{
@@ -162,7 +172,7 @@ void PicoCat::Update()
 
 
 
-		//점프->멈추기 :: 이부분 문제 많음
+		//점프->멈추기 :: 이부분 이슈 있음
 		if (INPUT->KeyUp(VK_UP) || INPUT->KeyUp('W'))
 		{
 			stat = CATSTAT::STAND;
@@ -187,6 +197,7 @@ void PicoCat::Update()
 
 	}
 
+#endif
 
 
 
@@ -208,4 +219,9 @@ void PicoCat::Render()
 	jump->Render();
 	push->Render();
 
+}
+
+void PicoCat::onBlock(float obPosY)
+{
+	col->SetWorldPosY(obPosY);
 }

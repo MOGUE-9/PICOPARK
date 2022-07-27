@@ -11,9 +11,7 @@ enum class CATSTAT
 
 class PicoCat
 {
-	//충돌블럭
-	ObRect*		col = new ObRect();
-
+private:
 	//이미지
 	ObImage*	stand = new ObImage(L"0_stand1.png");
 	ObImage*	walk = new ObImage(L"0_walkSprite.png");
@@ -28,11 +26,17 @@ class PicoCat
 	float		gravity;
 
 public:
+	//충돌블럭
+	ObRect* col = new ObRect();
+
+
+public:
 	PicoCat();
 	~PicoCat();
 
 	void Update();
 	void Render();
 
+	void onBlock(float obPosY);
 };
 
