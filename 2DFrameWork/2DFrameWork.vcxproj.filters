@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="Window.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Direct3D11.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ObCircle.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ObLine.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ObRect.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ObStar.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>GameObject\Member</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexType.h">
+      <Filter>GameObject\Member</Filter>
+    </ClInclude>
+    <ClInclude Include="Camara.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="ObImage.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>System</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="System">
+      <UniqueIdentifier>{21c08d9d-0d99-4e1a-b5cf-b6fe6274862f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{6f4bd646-61cf-4ecf-9e3c-e1c08a8bf624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Member">
+      <UniqueIdentifier>{09dc338e-ffeb-4250-8eb8-8d54dd34faf9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Window.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Direct3D11.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ObCircle.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ObLine.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ObRect.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ObStar.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>GameObject\Member</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="ObImage.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

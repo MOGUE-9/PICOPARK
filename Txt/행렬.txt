@@ -1,0 +1,66 @@
+
+
+Matrix 행,열 행렬
+
+단위행렬
+1
+
+영행렬
+0
+
+역행렬
+A^-1
+
+전치행렬
+행과열을 뒤집어 표현
+
+행렬의 곱연산
+
+(2 x 3) x (3 x 3)
+-> (2 x 3)
+
+(3 x 3) x (2 x 3)
+-> X
+
+A * B != B * A
+
+
+
+행렬의 곱연산은 좌표를 변환하는데 쓰임 (Transform)
+
+변환행렬
+
+Scaling Matrix
+
+Sx	0	0	0
+0	Sy	0	0
+0	0	Sz	0
+0	0	0	1
+
+(1 x 4)*(4 x 4) -> (1 x 4)
+Vertex * SM = (x*Sx,y*Sy,z*Sz, w )
+
+Translation Matrix
+
+1	0	0	0
+0	1	0	0
+0	0	1	0
+Tx	Ty	Tz	1
+
+(1 x 4)*(4 x 4) -> (1 x 4)
+Vertex * TM = (x+Tx,y+Ty,z+Tz, w )
+
+RotaionZ Matrix
+
+cA  sA	0	0
+-sA	cA	0	0
+0	0	1	0
+0	0	0	1
+
+(1 x 4)*(4 x 4) -> (1 x 4)
+Vertex * RM = (회전된A x,회전된A y, z, w )
+
+Vertex * S * R * T 
+W = S * R * T
+
+Vertex * W 

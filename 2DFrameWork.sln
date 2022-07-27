@@ -1,0 +1,124 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2DFrameWork", "2DFrameWork\2DFrameWork.vcxproj", "{C2138BC9-A195-455F-91A6-5FF469EB5E61}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game1", "Game1\Game1.vcxproj", "{62755BC4-7433-469B-8413-314F6EC62971}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61} = {C2138BC9-A195-455F-91A6-5FF469EB5E61}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game2", "Game2\Game2.vcxproj", "{E4AABC26-46D5-436A-BE00-FF12933156D1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61} = {C2138BC9-A195-455F-91A6-5FF469EB5E61}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contents", "Contents", "{0EC98764-9025-4AF9-8937-0EB5970059BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{E3F02C0D-0DAD-4181-A968-85F48C12D251}"
+	ProjectSection(SolutionItems) = preProject
+		Shaders\1.Basic.hlsl = Shaders\1.Basic.hlsl
+		Shaders\2.Image.hlsl = Shaders\2.Image.hlsl
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Txt", "Txt", "{BC1DD457-26F1-4145-994B-7D33F751C292}"
+	ProjectSection(SolutionItems) = preProject
+		Txt\렌더링 파이프라인.txt = Txt\렌더링 파이프라인.txt
+		Txt\벡터.txt = Txt\벡터.txt
+		Txt\삼각함수.txt = Txt\삼각함수.txt
+		Txt\좌표해상도.txt = Txt\좌표해상도.txt
+		Txt\행렬.txt = Txt\행렬.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sound", "Sound", "{031D9208-75CB-45ED-AE3F-F9B0AA28E8CC}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Desktop\Framework\Contents\Sound\bgm.wav = ..\..\Desktop\Framework\Contents\Sound\bgm.wav
+		..\..\Desktop\Framework\Contents\Sound\gun.wav = ..\..\Desktop\Framework\Contents\Sound\gun.wav
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{B2CB356A-0022-4EAF-BFEF-D1D1CF61CDB1}"
+	ProjectSection(SolutionItems) = preProject
+		Contents\Images\0_jump1.png = Contents\Images\0_jump1.png
+		Contents\Images\0_pushSprite.png = Contents\Images\0_pushSprite.png
+		Contents\Images\0_stand1.png = Contents\Images\0_stand1.png
+		Contents\Images\0_walkSprite.png = Contents\Images\0_walkSprite.png
+		Contents\Images\back.png = Contents\Images\back.png
+		Contents\Images\bg.png = Contents\Images\bg.png
+		Contents\Images\bono.jpg = Contents\Images\bono.jpg
+		Contents\Images\bono2.png = Contents\Images\bono2.png
+		Contents\Images\bono3.png = Contents\Images\bono3.png
+		Contents\Images\Boost.png = Contents\Images\Boost.png
+		Contents\Images\boss.bmp = Contents\Images\boss.bmp
+		Contents\Images\C_Walk.png = Contents\Images\C_Walk.png
+		Contents\Images\coin.bmp = Contents\Images\coin.bmp
+		Contents\Images\floor.bmp = Contents\Images\floor.bmp
+		Contents\Images\Floor.png = Contents\Images\Floor.png
+		Contents\Images\iso.png = Contents\Images\iso.png
+		Contents\Images\Jelly.png = Contents\Images\Jelly.png
+		Contents\Images\Jump.png = Contents\Images\Jump.png
+		Contents\Images\LeftRight.png = Contents\Images\LeftRight.png
+		Contents\Images\Life.png = Contents\Images\Life.png
+		Contents\Images\Oven1.png = Contents\Images\Oven1.png
+		Contents\Images\Oven2.png = Contents\Images\Oven2.png
+		Contents\Images\pepe.png = Contents\Images\pepe.png
+		Contents\Images\PlayeBullet.png = Contents\Images\PlayeBullet.png
+		Contents\Images\rock.bmp = Contents\Images\rock.bmp
+		Contents\Images\Roll.png = Contents\Images\Roll.png
+		Contents\Images\run.bmp = Contents\Images\run.bmp
+		Contents\Images\Slide.png = Contents\Images\Slide.png
+		Contents\Images\spin.bmp = Contents\Images\spin.bmp
+		Contents\Images\Start.png = Contents\Images\Start.png
+		Contents\Images\Tile.png = Contents\Images\Tile.png
+		Contents\Images\Tile2.png = Contents\Images\Tile2.png
+		Contents\Images\Time.png = Contents\Images\Time.png
+		Contents\Images\Up.png = Contents\Images\Up.png
+		Contents\Images\Walk.png = Contents\Images\Walk.png
+		Contents\Images\zzangu_3.jpg = Contents\Images\zzangu_3.jpg
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61}.Debug|x64.ActiveCfg = Debug|x64
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61}.Debug|x64.Build.0 = Debug|x64
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61}.Debug|x86.ActiveCfg = Debug|Win32
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61}.Debug|x86.Build.0 = Debug|Win32
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61}.Release|x64.ActiveCfg = Release|x64
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61}.Release|x64.Build.0 = Release|x64
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61}.Release|x86.ActiveCfg = Release|Win32
+		{C2138BC9-A195-455F-91A6-5FF469EB5E61}.Release|x86.Build.0 = Release|Win32
+		{62755BC4-7433-469B-8413-314F6EC62971}.Debug|x64.ActiveCfg = Debug|x64
+		{62755BC4-7433-469B-8413-314F6EC62971}.Debug|x64.Build.0 = Debug|x64
+		{62755BC4-7433-469B-8413-314F6EC62971}.Debug|x86.ActiveCfg = Debug|Win32
+		{62755BC4-7433-469B-8413-314F6EC62971}.Debug|x86.Build.0 = Debug|Win32
+		{62755BC4-7433-469B-8413-314F6EC62971}.Release|x64.ActiveCfg = Release|x64
+		{62755BC4-7433-469B-8413-314F6EC62971}.Release|x64.Build.0 = Release|x64
+		{62755BC4-7433-469B-8413-314F6EC62971}.Release|x86.ActiveCfg = Release|Win32
+		{62755BC4-7433-469B-8413-314F6EC62971}.Release|x86.Build.0 = Release|Win32
+		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Debug|x64.ActiveCfg = Debug|x64
+		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Debug|x64.Build.0 = Debug|x64
+		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Debug|x86.ActiveCfg = Debug|Win32
+		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Debug|x86.Build.0 = Debug|Win32
+		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Release|x64.ActiveCfg = Release|x64
+		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Release|x64.Build.0 = Release|x64
+		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Release|x86.ActiveCfg = Release|Win32
+		{E4AABC26-46D5-436A-BE00-FF12933156D1}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{031D9208-75CB-45ED-AE3F-F9B0AA28E8CC} = {0EC98764-9025-4AF9-8937-0EB5970059BA}
+		{B2CB356A-0022-4EAF-BFEF-D1D1CF61CDB1} = {0EC98764-9025-4AF9-8937-0EB5970059BA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E65A645-0ED0-45FC-8214-114C1DE27774}
+	EndGlobalSection
+EndGlobal
