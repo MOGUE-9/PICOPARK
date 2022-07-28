@@ -11,6 +11,8 @@ void Main::Init()
 	block->color = Color(1.0f, 1.0f, 0.0f, 1.0f);
 	block->scale = Vector2(1000.0f, 50.0f);
 
+	titleMap = new Title();
+
 	player = new PicoCat();
 }
 
@@ -30,15 +32,16 @@ void Main::Update()
 	cout << block->GetWorldPos().y << endl;
 	cout << player->col->GetWorldPos().y << endl;
 
+	titleMap->Update();
 }
 
 void Main::LateUpdate()
 {
-	if (player->col->Intersect(block))
+	if (player->col->Intersect(titleMap->floor))
 	{
-		player->onBlock(block->GetWorldPos().y);
+		player->onBlock(titleMap->floor->GetWorldPos().y);
 
-	
+
 		//블럭 밟고 있을 때 돌려줄 값 :: 계속 블럭의 윗쪽에 고정되어 있어야 함
 
 		//if (player->col->GetWorldPos().y < block->GetWorldPos().y)
@@ -47,6 +50,19 @@ void Main::LateUpdate()
 		//}
 	}
 
+
+	//if (player->col->Intersect(block))
+	//{
+	//	player->onBlock(block->GetWorldPos().y);
+
+	//
+	//	//블럭 밟고 있을 때 돌려줄 값 :: 계속 블럭의 윗쪽에 고정되어 있어야 함
+
+	//	//if (player->col->GetWorldPos().y < block->GetWorldPos().y)
+	//	//{
+	//	//	player->col->SetWorldPosY(-50.0f);
+	//	//}
+	//}
 	//if (!block->Intersect(player->col->GetWorldPivot()))
 	//{
 	//	player->offBlock();
@@ -58,7 +74,8 @@ void Main::LateUpdate()
 
 void Main::Render()
 {
-	block->Render();
+	titleMap->Render();
+	//block->Render();
 	player->Render();
 }
 

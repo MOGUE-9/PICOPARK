@@ -8,6 +8,7 @@ private:
 	
 	ObRect* block;
 
+	Title* titleMap;
 
 	PicoCat* player;
 
