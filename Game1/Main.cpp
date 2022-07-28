@@ -38,6 +38,7 @@ void Main::LateUpdate()
 	{
 		player->onBlock(block->GetWorldPos().y);
 
+	
 		//블럭 밟고 있을 때 돌려줄 값 :: 계속 블럭의 윗쪽에 고정되어 있어야 함
 
 		//if (player->col->GetWorldPos().y < block->GetWorldPos().y)
@@ -45,10 +46,12 @@ void Main::LateUpdate()
 		//	player->col->SetWorldPosY(-50.0f);
 		//}
 	}
-	//else if (!block->Intersect(player->col->GetWorldPivot()))
+
+	//if (!block->Intersect(player->col->GetWorldPivot()))
 	//{
-	//	player->isOn = false;
+	//	player->offBlock();
 	//}
+
 	player->Update();
 
 }
@@ -68,7 +71,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, in
 {
     app.SetAppName(L"Game1");
     app.SetInstance(instance);
-	app.InitWidthHeight(1400,800.0f);
+	app.InitWidthHeight(960.0f,540.0f); // 원본게임비율 (1280.0f,720.0f)
 	Main* main = new Main();
 	int wParam = (int)WIN->Run(main);
 	WIN->DeleteSingleton();

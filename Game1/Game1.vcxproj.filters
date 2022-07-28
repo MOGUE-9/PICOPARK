@@ -6,16 +6,25 @@
     <ClInclude Include="PicoCat.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Map1.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PicoCat.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Map1.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
       <UniqueIdentifier>{3bb453d1-d0e4-4df2-ad9a-9b15531592c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{8c40b28e-c9b6-45d8-a2ff-c1f1618f3649}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

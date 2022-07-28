@@ -88,7 +88,7 @@ public:
 
 public:
 	Application() :instance(nullptr), handle(nullptr), vSync(false), fullScreen(false)
-		, appName(L" "), width(1280.0f), height(720.0f), background(Color(0.7f, 0.7f, 0.7f, 1.0f))
+		, appName(L" "), width(1280.0f), height(720.0f), background(Color(0.9f, 0.9f, 0.9f, 1.0f))
 		, fixFrame(200), deltaScale(1.0f), soundScale(1.0f), x(0.0f), y(0.0f) {}
 	float	GetWidth() { return width; }
 	float	GetHeight() { return height; }

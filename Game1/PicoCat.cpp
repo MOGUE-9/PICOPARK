@@ -8,8 +8,9 @@ PicoCat::PicoCat()
 	col->collider = COLLIDER::RECT;
 	col->pivot = OFFSET_B;
 	col->SetWorldPos(Vector2(0.0f, 0.0f));
-	col->scale = Vector2(50.0f, 50.0f);
+	col->scale = Vector2(25.0f, 50.0f);
 	col->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
+
 
 	stand->SetParentRT(*col);
 	stand->visible = true;
@@ -51,7 +52,7 @@ PicoCat::~PicoCat()
 void PicoCat::Update()
 {
 
-	gravity += 150.0f * DELTA;
+	gravity += 50.0f * DELTA;
 	//gravity = Utility::Saturate(gravity, 0.0f, 500.0f);
 
 	//계속 vv 아래로 중력받음 (바닥 뚫리면 떨어짐)
@@ -59,8 +60,13 @@ void PicoCat::Update()
 
 	if (isOn)
 	{
-		col->SetLocalPosY(blockOn);
+		jump->visible = false;
+		stand->visible = true;
+
+		col->SetWorldPosY(Utility::Saturate(col->GetWorldPos().y,blockOn,1000.0f));
+		//col->SetLocalPosY(blockOn);
 	}
+
 
 	//오른쪽으로
 	if (INPUT->KeyPress(VK_RIGHT)|| INPUT->KeyPress('D'))
@@ -89,18 +95,19 @@ void PicoCat::Update()
 		walk->reverseLR = true;
 	}
 
-	//움직임 키 뗐을 때
+	//움직임 키 뗐을 때 :: 오른쪽
 	if (INPUT->KeyUp(VK_RIGHT) || INPUT->KeyUp('D'))
 	{
-		stand->visible = false;
+		jump->visible = false;
 		walk->visible = false;
 
-		jump->visible = true;
+		stand->visible = true;
 
 		jump->reverseLR = false;
 		stand->reverseLR = false;
 		walk->reverseLR = false;
 	}
+	//점프
 	else if (INPUT->KeyUp(VK_LEFT) || INPUT->KeyUp('S'))
 	{
 		stand->visible = false;
@@ -117,7 +124,7 @@ void PicoCat::Update()
 	if (INPUT->KeyDown(VK_UP) || INPUT->KeyDown('W'))
 	{
 		isOn = false;
-		gravity = -300.0f;
+		gravity = -100.0f;
 
 		//stand 방향과 같게 좌우반전 해주기
 		//if (jump->reverseLR != stand->reverseLR) jump->reverseLR = stand->reverseLR;
@@ -299,3 +306,10 @@ void PicoCat::onBlock(float obPosY)
 	blockOn = obPosY;
 	isOn = true;
 }
+
+void PicoCat::offBlock()
+{
+	isOn = false;
+
+}
+

@@ -24,13 +24,16 @@ private:
 	float		scalar;
 	float		gravity;
 
-public:
-	//충돌블럭
-	ObRect* col = new ObRect();
-
 	//블럭
 	float		blockOn;
 	bool		isOn;
+
+public:
+
+	//충돌블럭
+	ObRect* col = new ObRect();
+	ObRect* headCol = new ObRect();
+
 
 public:
 	PicoCat();
@@ -40,5 +43,7 @@ public:
 	void Render();
 
 	void onBlock(float obPosY);
+	void offBlock();
+
 };
 
