@@ -7,7 +7,7 @@ PicoCat::PicoCat()
 	col->isFilled = false;
 	col->collider = COLLIDER::RECT;
 	col->pivot = OFFSET_B;
-	col->SetWorldPos(Vector2(0.0f, 0.0f));
+	col->SetWorldPos(Vector2(0.0f, -240.0f)); // y값 == 바닥윗면 값
 	col->scale = Vector2(25.0f, 50.0f);
 	col->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -36,8 +36,8 @@ PicoCat::PicoCat()
 	push->maxFrame.x = 8;
 	push->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 
-	scalar = 100.0f;
-	gravity = 50.0f;
+	scalar = 50.0f; //좌우 이동속도
+	gravity = 0.0f; //아래로 떨어지는 중력값
 }
 
 PicoCat::~PicoCat()
@@ -52,26 +52,39 @@ PicoCat::~PicoCat()
 void PicoCat::Update()
 {
 
-	gravity += 50.0f * DELTA;
 	//gravity = Utility::Saturate(gravity, 0.0f, 500.0f);
 
 	//계속 vv 아래로 중력받음 (바닥 뚫리면 떨어짐)
 	col->MoveWorldPos(DOWN * gravity * DELTA);
+
+	//바닥으로 떨어져도 위에서 자동 리스폰 되게
+	if (col->GetWorldPos().y < -app.GetHalfHeight())
+	{
+		col->SetWorldPosX(col->GetWorldPos().x - 200.0f);
+		col->SetWorldPosY(app.GetHalfHeight());
+	}
 
 	if (isOn)
 	{
 		jump->visible = false;
 		stand->visible = true;
 
-		col->SetWorldPosY(Utility::Saturate(col->GetWorldPos().y,blockOn,1000.0f));
+		gravity = 0.0f;
+
+		col->SetWorldPosY(blockOn);
 		//col->SetLocalPosY(blockOn);
+	}
+	else
+	{
+		gravity += 100.0f * DELTA;
+		if (gravity > 300.0f) gravity = 300.0f;
 	}
 
 
 	//오른쪽으로
 	if (INPUT->KeyPress(VK_RIGHT)|| INPUT->KeyPress('D'))
 	{
-		col->MoveWorldPos(RIGHT * scalar * DELTA);
+		col->MoveWorldPos(RIGHT * 100.0f * DELTA);
 
 		stand->visible = false;
 		jump->visible = false;
@@ -84,7 +97,7 @@ void PicoCat::Update()
 	//왼쪽으로
 	else if (INPUT->KeyPress(VK_LEFT) || INPUT->KeyPress('S'))
 	{
-		col->MoveWorldPos(LEFT * scalar * DELTA);
+		col->MoveWorldPos(LEFT * 100.0f * DELTA);
 
 		stand->visible = false;
 		jump->visible = false;
@@ -301,6 +314,7 @@ void PicoCat::Render()
 
 }
 
+//블럭 밟고 있을 때 돌려줄 값 :: 계속 블럭의 윗쪽에 고정되어 있어야 함
 void PicoCat::onBlock(float obPosY)
 {
 	blockOn = obPosY;
@@ -310,6 +324,5 @@ void PicoCat::onBlock(float obPosY)
 void PicoCat::offBlock()
 {
 	isOn = false;
-
 }
 

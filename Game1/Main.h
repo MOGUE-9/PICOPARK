@@ -2,17 +2,23 @@
 #define FMAX 8
 #define RMAX 3
 
+enum class STAGE
+{
+	TITLE,
+	ST_1,
+	ST_2
+};
+
 class Main : public Scene
 {
 private:
 	
-	ObRect* block;
+	Title*		titleMap;
+	Map1*		firstMap;
 
-	Title* titleMap;
+	PicoCat*	player;
 
-	PicoCat* player;
-
-
+	STAGE		stage{ STAGE::TITLE };
 
 
 public:

@@ -3,70 +3,80 @@
 
 void Main::Init()
 {
-	//룰
-	block = new ObRect();
-	block->collider = COLLIDER::RECT;
-	block->pivot = OFFSET_T;
-	block->SetWorldPosY(-50.0f);
-	block->color = Color(1.0f, 1.0f, 0.0f, 1.0f);
-	block->scale = Vector2(1000.0f, 50.0f);
-
 	titleMap = new Title();
+	firstMap = new Map1();
 
 	player = new PicoCat();
 }
 
 void Main::Release()
 {
-
+	SafeDelete(titleMap);
+	SafeDelete(firstMap);
+	SafeDelete(player);
 }
 
 void Main::Update()
 {
 	//ImGuiColorEditFlags
-	ImGui::ColorEdit4("d", (float*)&block->color, ImGuiColorEditFlags_PickerHueWheel);
+	//ImGui::ColorEdit4("d", (float*)&block->color, ImGuiColorEditFlags_PickerHueWheel);
 
-	block->Update();
+	if (INPUT->KeyPress('L'))
+	{
+		CAM->position += RIGHT * 200.0f * DELTA;
+	}
+
+
 	player->Update();
 
-	cout << block->GetWorldPos().y << endl;
-	cout << player->col->GetWorldPos().y << endl;
-
 	titleMap->Update();
+	firstMap->Update();
 }
 
 void Main::LateUpdate()
 {
-	if (player->col->Intersect(titleMap->floor))
+	if (stage==STAGE::TITLE)
 	{
-		player->onBlock(titleMap->floor->GetWorldPos().y);
+		//플레이어가 바닥의 UP방향에 있을 때만 충돌 :: 
+		// 양옆으로 부딪히면 좌우 위치에 고정되게하기 -> Title cpp에서?
+		if (true)
+		{
 
+		}
+		//바닥과 충돌중일 때는 계속 위에 있기
+		if (player->col->Intersect(titleMap->floor))
+		{
+			player->onBlock(titleMap->floor->GetWorldPos().y);
+		}
+		else
+		{
+			player->offBlock();
+		}
+		//그냥 문열기
+		if (player->col->Intersect(titleMap->door))
+		{
+			if (INPUT->KeyDown(VK_DOWN))
+			{
+				titleMap->openDoor();
+			}
+		}
+		//스테이지 이동
+		else if (player->col->Intersect(titleMap->doorOP))
+		{
+			if (INPUT->KeyDown(VK_DOWN))
+			{
+				titleMap->stageClose();
+				stage = STAGE::ST_1;
+			}
+		}
+		titleMap->Update();
 
-		//블럭 밟고 있을 때 돌려줄 값 :: 계속 블럭의 윗쪽에 고정되어 있어야 함
+	}
+	else if (stage == STAGE::ST_1)
+	{
 
-		//if (player->col->GetWorldPos().y < block->GetWorldPos().y)
-		//{
-		//	player->col->SetWorldPosY(-50.0f);
-		//}
 	}
 
-
-	//if (player->col->Intersect(block))
-	//{
-	//	player->onBlock(block->GetWorldPos().y);
-
-	//
-	//	//블럭 밟고 있을 때 돌려줄 값 :: 계속 블럭의 윗쪽에 고정되어 있어야 함
-
-	//	//if (player->col->GetWorldPos().y < block->GetWorldPos().y)
-	//	//{
-	//	//	player->col->SetWorldPosY(-50.0f);
-	//	//}
-	//}
-	//if (!block->Intersect(player->col->GetWorldPivot()))
-	//{
-	//	player->offBlock();
-	//}
 
 	player->Update();
 
@@ -74,7 +84,14 @@ void Main::LateUpdate()
 
 void Main::Render()
 {
-	titleMap->Render();
+	if (stage == STAGE::TITLE)
+	{
+		titleMap->Render();
+	}
+	else if(stage == STAGE::ST_1)
+	{
+		firstMap->Render();
+	}
 	//block->Render();
 	player->Render();
 }

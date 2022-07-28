@@ -1,15 +1,19 @@
 #pragma once
 class Title
 {
-	ObRect* mapBox = new ObRect();
+private:
 
-	ObImage* name;
+	ObRect*		mapBox = new ObRect();
+	
+	ObImage*	name;
+
+	bool		isOpen{ false }; //main에서 조건맞으면 문 이미지 변경
 
 public:
 
-	ObImage* floor;
-	ObImage* door;
-	ObImage* doorOP;
+	ObImage*	floor;
+	ObImage*	door;
+	ObImage*	doorOP;
 
 
 public:
@@ -19,5 +23,11 @@ public:
 
 	void Update();
 	void Render();
+
+	void openDoor();
+
+	void stageOpen();
+	void stageClose();
+
 };
 
