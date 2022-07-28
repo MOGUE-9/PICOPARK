@@ -46,7 +46,6 @@ Map1::Map1()
 Map1::~Map1()
 {
 	SafeDelete(mapBox);
-
 }
 
 void Map1::Update()

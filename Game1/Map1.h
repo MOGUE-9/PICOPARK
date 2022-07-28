@@ -4,6 +4,7 @@ class Map1
 	//창크기 박스
 	ObRect* mapBox = new ObRect();
 
+public:
 	ObImage* wall[2];
 	ObImage* floor[3];
 	ObImage* stair[3];

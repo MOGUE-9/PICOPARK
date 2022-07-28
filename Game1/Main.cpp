@@ -48,10 +48,7 @@ void Main::LateUpdate()
 		{
 			player->onBlock(titleMap->floor->GetWorldPos().y);
 		}
-		else
-		{
-			player->offBlock();
-		}
+		else player->offBlock();
 		//그냥 문열기
 		if (player->col->Intersect(titleMap->door))
 		{
@@ -69,16 +66,46 @@ void Main::LateUpdate()
 				stage = STAGE::ST_1;
 			}
 		}
+		player->Update();
+
 		titleMap->Update();
 
 	}
 	else if (stage == STAGE::ST_1)
 	{
+		for (int i = 0; i < 2; i++)
+		{
+			//벽 충돌
+			if (player->col->Intersect(firstMap->wall[i]))
+			{
+
+			}
+		}
+
+		for (int i = 0; i < 3; i++)
+		{
+			//계단충돌
+			if (player->col->Intersect(firstMap->stair[i]))
+			{
+				player->onBlock(firstMap->stair[i]->GetWorldPos().y);
+				break;
+			}
+			//바닥충돌
+			else if (player->col->Intersect(firstMap->floor[i]))
+			{
+				cout << "floor" << endl;
+				player->onBlock(firstMap->floor[i]->GetWorldPos().y);
+				break;
+			}
+			else player->offBlock();
+		}
+		player->Update();
+
+		firstMap->Update();
 
 	}
 
 
-	player->Update();
 
 }
 
