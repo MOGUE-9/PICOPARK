@@ -21,6 +21,7 @@ private:
 	//현재상태
 	CATSTAT		stat;
 	
+	Vector2		direction;
 	float		scalar;
 	float		gravity;
 
@@ -28,7 +29,12 @@ private:
 	float		blockOn;
 	bool		isOn;
 
+	//점프여부 :: 바닥에 닿으면 초기화 :: isOn = true 일때
+	bool		isJump;
+	float		jumpTime;
+
 public:
+
 
 	//충돌블럭
 	ObRect* col = new ObRect();

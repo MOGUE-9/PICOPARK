@@ -11,7 +11,6 @@ PicoCat::PicoCat()
 	col->scale = Vector2(25.0f, 50.0f);
 	col->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
-
 	stand->SetParentRT(*col);
 	stand->visible = true;
 	stand->pivot = OFFSET_B;
@@ -36,7 +35,7 @@ PicoCat::PicoCat()
 	push->maxFrame.x = 8;
 	push->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 
-	scalar = 50.0f; //좌우 이동속도
+	scalar = 100.0f; //좌우 이동속도
 	gravity = 0.0f; //아래로 떨어지는 중력값
 }
 
@@ -54,7 +53,8 @@ void PicoCat::Update()
 	//gravity = Utility::Saturate(gravity, 0.0f, 500.0f);
 
 	//계속 vv 아래로 중력받음 (바닥 뚫리면 떨어짐)
-	col->MoveWorldPos(DOWN * gravity * DELTA);
+	col->MoveWorldPos(direction * scalar * DELTA + DOWN * gravity * DELTA);
+	//col->MoveWorldPos(DOWN * gravity * DELTA);
 
 	//바닥으로 떨어져도 위에서 자동 리스폰 되게
 	if (col->GetWorldPos().y < -app.GetHalfHeight())
@@ -69,6 +69,9 @@ void PicoCat::Update()
 		stand->visible = true;
 
 		gravity = 0.0f;
+		//scalar = 0.0f;
+
+		isJump = false;
 
 		col->SetWorldPosY(blockOn);
 		//col->SetLocalPosY(blockOn);
@@ -81,9 +84,10 @@ void PicoCat::Update()
 
 
 	//오른쪽으로
-	if (INPUT->KeyPress(VK_RIGHT)|| INPUT->KeyPress('D'))
+	if (INPUT->KeyPress(VK_RIGHT) || INPUT->KeyPress('D'))
 	{
-		col->MoveWorldPos(RIGHT * 100.0f * DELTA);
+		direction = RIGHT;
+		//col->MoveWorldPos(RIGHT * 100.0f * DELTA);
 
 		stand->visible = false;
 		jump->visible = false;
@@ -96,7 +100,8 @@ void PicoCat::Update()
 	//왼쪽으로
 	else if (INPUT->KeyPress(VK_LEFT) || INPUT->KeyPress('S'))
 	{
-		col->MoveWorldPos(LEFT * 100.0f * DELTA);
+		direction = LEFT;
+		//col->MoveWorldPos(LEFT * 100.0f * DELTA);
 
 		stand->visible = false;
 		jump->visible = false;
@@ -106,14 +111,15 @@ void PicoCat::Update()
 		stand->reverseLR = true;
 		walk->reverseLR = true;
 	}
+	else direction = Vector2(0.0f, 0.0f);
 
 	//움직임 키 뗐을 때 :: 오른쪽
 	if (INPUT->KeyUp(VK_RIGHT) || INPUT->KeyUp('D'))
 	{
-		jump->visible = false;
+		stand->visible = false;
 		walk->visible = false;
 
-		stand->visible = true;
+		jump->visible = true;
 
 		jump->reverseLR = false;
 		stand->reverseLR = false;
@@ -132,21 +138,57 @@ void PicoCat::Update()
 		walk->reverseLR = true;
 	}
 
-	//문 앞 아닐때만 점프 << 근데 이거 이렇게 하느니 그냥 ... 문 여는 키를 따로 주는게 나을듯
-	if (INPUT->KeyDown(VK_UP) || INPUT->KeyDown('W'))
+
+	if (!isJump)
 	{
-		isOn = false;
-		gravity = -100.0f;
 
-		//stand 방향과 같게 좌우반전 해주기
-		//if (jump->reverseLR != stand->reverseLR) jump->reverseLR = stand->reverseLR;
+		//누르는 시간 따라서 올라가는 힘추가
+		if (INPUT->KeyPress(VK_UP) || INPUT->KeyPress('W'))
+		{
+			//if (scalar >= 5.0f)
+			//{
+			//	if (TIMER->GetTick(jumpTime, 5.0f))
+			//	{
+			//		scalar += 1.0f;
+			//	}
+			//}
+			//else
+			//{
+			//	scalar = 5.0f;
+			//}
 
-		stand->visible = false;
-		walk->visible = false;
+			//scalar += 1.0f;
+			//scalar = Utility::Saturate(scalar,0.0f,50.0f);
+		}
 
-		jump->visible = true;
+		//문 앞 아닐때만 점프 << 근데 이거 이렇게 하느니 그냥 ... 문 여는 키를 따로 주는게 나을듯
+		if (INPUT->KeyDown(VK_UP) || INPUT->KeyDown('W'))
+		{
+			//바닥충돌 off
+			isOn = false;
+
+			gravity = -100.0f;
+
+			//stand 방향과 같게 좌우반전 해주기
+			//if (jump->reverseLR != stand->reverseLR) jump->reverseLR = stand->reverseLR;
+
+			stand->visible = false;
+			walk->visible = false;
+
+			jump->visible = true;
+		}
+
+		//키 떼면 점프 1회 판정
+		if (INPUT->KeyUp(VK_UP) || INPUT->KeyUp('W'))
+		{
+			isJump = true;
+		}
+
 	}
 
+
+	cout <<"힘"<< scalar << endl;
+	//cout <<"중력"<< gravity << endl;
 
 #if 0 
 	//가만히
@@ -290,9 +332,6 @@ void PicoCat::Update()
 	}
 
 #endif
-
-
-
 
 //-------------------------------------
 	col->Update();
