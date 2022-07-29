@@ -51,7 +51,6 @@ PicoCat::~PicoCat()
 
 void PicoCat::Update()
 {
-
 	//gravity = Utility::Saturate(gravity, 0.0f, 500.0f);
 
 	//°è¼Ó vv ¾Æ·¡·Î Áß·Â¹ÞÀ½ (¹Ù´Ú ¶Õ¸®¸é ¶³¾îÁü)

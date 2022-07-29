@@ -21,10 +21,7 @@ void Main::Update()
 	//ImGuiColorEditFlags
 	//ImGui::ColorEdit4("d", (float*)&block->color, ImGuiColorEditFlags_PickerHueWheel);
 
-	if (INPUT->KeyPress('L'))
-	{
-		CAM->position += RIGHT * 200.0f * DELTA;
-	}
+	CAM->position;
 
 
 	player->Update();
@@ -35,8 +32,14 @@ void Main::Update()
 
 void Main::LateUpdate()
 {
+	Vector2 velocity = player->col->GetWorldPos() - CAM->position;
+	CAM->position += velocity * DELTA;
+	
+
 	if (stage==STAGE::TITLE)
 	{
+		CAM->position.y = 0.0f;
+		CAM->position.x = 0.0f;
 		//플레이어가 바닥의 UP방향에 있을 때만 충돌 :: 
 		// 양옆으로 부딪히면 좌우 위치에 고정되게하기 -> Title cpp에서?
 		if (true)
@@ -73,6 +76,9 @@ void Main::LateUpdate()
 	}
 	else if (stage == STAGE::ST_1)
 	{
+		CAM->position.y = 0.0f;
+		CAM->position.x = Utility::Saturate(CAM->position.x, 0.0f, 2000.0f);
+
 		for (int i = 0; i < 2; i++)
 		{
 			//벽 충돌
