@@ -7,9 +7,17 @@ PicoCat::PicoCat()
 	col->isFilled = false;
 	col->collider = COLLIDER::RECT;
 	col->pivot = OFFSET_B;
-	col->SetWorldPos(Vector2(0.0f, -240.0f)); // y값 == 바닥윗면 값
-	col->scale = Vector2(25.0f, 50.0f);
+	col->SetWorldPos(Vector2(0.0f, 0.0f)); // y값 == 바닥윗면 값
+	col->scale = Vector2(25.0f, 40.0f);
 	col->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
+
+	headCol-> isFilled = false;
+	headCol->collider = COLLIDER::RECT;
+	headCol->SetParentRT(*col);
+	headCol->pivot = OFFSET_B;
+	headCol->SetLocalPos(Vector2(0.0f, 15.0f)); // y값 == 바닥윗면 값
+	headCol->scale = Vector2(48.0f, 32.0f);
+	headCol->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
 	stand->SetParentRT(*col);
 	stand->visible = true;
@@ -37,6 +45,7 @@ PicoCat::PicoCat()
 
 	scalar = 100.0f; //좌우 이동속도
 	gravity = 0.0f; //아래로 떨어지는 중력값
+	gravityPlus = 0.0f; //누르는 시간에 따라서 더해지는 중력플러스 값
 }
 
 PicoCat::~PicoCat()
@@ -50,6 +59,8 @@ PicoCat::~PicoCat()
 
 void PicoCat::Update()
 {
+	//cout << col->GetWorldPivot().y << endl;
+
 	//gravity = Utility::Saturate(gravity, 0.0f, 500.0f);
 
 	//계속 vv 아래로 중력받음 (바닥 뚫리면 떨어짐)
@@ -63,6 +74,7 @@ void PicoCat::Update()
 		col->SetWorldPosY(app.GetHalfHeight());
 	}
 
+	//블럭 충돌-> 높이 고정
 	if (isOn)
 	{
 		jump->visible = false;
@@ -80,6 +92,12 @@ void PicoCat::Update()
 	{
 		gravity += 100.0f * DELTA;
 		if (gravity > 300.0f) gravity = 300.0f;
+	}
+
+	//벽 충돌-> X고정
+	if (isWall)
+	{
+		col->SetWorldPosX(wallOn);
 	}
 
 
@@ -138,56 +156,57 @@ void PicoCat::Update()
 		walk->reverseLR = true;
 	}
 
+ 	//누르는 시간 따라서 올라가는 힘추가
+ 	if (INPUT->KeyPress(VK_UP) || INPUT->KeyPress('W'))
+ 	{
 
-	if (!isJump)
-	{
+ 		//if (gravityPlus <= 5.0f)
+ 		//{
+ 		//	if (TIMER->GetTick(jumpTime, 5.0f))
+ 		//	{
+ 		//		gravityPlus += 1.0f * DELTA;
+ 		//	}
+ 		//}
+ 		//else
+ 		//{
+ 		//	gravityPlus = 5.0f * DELTA;
+ 		//}
 
-		//누르는 시간 따라서 올라가는 힘추가
-		if (INPUT->KeyPress(VK_UP) || INPUT->KeyPress('W'))
-		{
-			//if (scalar >= 5.0f)
-			//{
-			//	if (TIMER->GetTick(jumpTime, 5.0f))
-			//	{
-			//		scalar += 1.0f;
-			//	}
-			//}
-			//else
-			//{
-			//	scalar = 5.0f;
-			//}
+ 		//scalar += 1.0f;
+ 		//scalar = Utility::Saturate(scalar,0.0f,50.0f);
+ 	}
 
-			//scalar += 1.0f;
-			//scalar = Utility::Saturate(scalar,0.0f,50.0f);
+ 	//문 앞 아닐때만 점프 << 근데 이거 이렇게 하느니 그냥 ... 문 여는 키를 따로 주는게 나을듯
+ 	if (INPUT->KeyDown(VK_UP) || INPUT->KeyDown('W'))
+ 	{
+
+ 		if (!isJump)
+ 		{
+ 			//바닥충돌 off
+ 			isOn = false;
+
+ 			gravity = -150.0f;
+
+ 			//stand 방향과 같게 좌우반전 해주기
+ 			//if (jump->reverseLR != stand->reverseLR) jump->reverseLR = stand->reverseLR;
+
+ 			stand->visible = false;
+ 			walk->visible = false;
+
+ 			jump->visible = true;
 		}
 
-		//문 앞 아닐때만 점프 << 근데 이거 이렇게 하느니 그냥 ... 문 여는 키를 따로 주는게 나을듯
-		if (INPUT->KeyDown(VK_UP) || INPUT->KeyDown('W'))
-		{
-			//바닥충돌 off
-			isOn = false;
+ 	}
 
-			gravity = -100.0f;
-
-			//stand 방향과 같게 좌우반전 해주기
-			//if (jump->reverseLR != stand->reverseLR) jump->reverseLR = stand->reverseLR;
-
-			stand->visible = false;
-			walk->visible = false;
-
-			jump->visible = true;
-		}
-
-		//키 떼면 점프 1회 판정
-		if (INPUT->KeyUp(VK_UP) || INPUT->KeyUp('W'))
-		{
-			isJump = true;
-		}
-
-	}
+ 	//키 떼면 점프 1회 판정
+ 	if (INPUT->KeyUp(VK_UP) || INPUT->KeyUp('W'))
+ 	{
+ 		//isJump = true;
+ 	}
 
 
-	cout <<"힘"<< scalar << endl;
+
+	//cout <<"힘"<< gravityPlus << endl;
 	//cout <<"중력"<< gravity << endl;
 
 #if 0 
@@ -335,6 +354,7 @@ void PicoCat::Update()
 
 //-------------------------------------
 	col->Update();
+	headCol->Update();
 	stand->Update();
 	walk->Update();
 	jump->Update();
@@ -345,6 +365,7 @@ void PicoCat::Update()
 void PicoCat::Render()
 {
 	col->Render();
+	headCol->Render();
 	stand->Render();
 	walk->Render();
 	jump->Render();
@@ -362,5 +383,29 @@ void PicoCat::onBlock(float obPosY)
 void PicoCat::offBlock()
 {
 	isOn = false;
+}
+
+//col이 벽이나 계단 블럭의 Y좌표보다 낮게 있을때 조건이면 들어옴
+
+void PicoCat::onWall(float obPosX, float obScaleX)
+{
+	//좌측
+	if (col->GetWorldPivot().x < obPosX)
+	{
+			// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
+		wallOn = obPosX - obScaleX * 0.5f - 24.0f;
+	}
+	//우측
+	else if (col->GetWorldPivot().x > obPosX)
+	{
+		wallOn = obPosX + obScaleX * 0.5f + 24.0f;
+	}
+
+	isWall = true;
+}
+
+void PicoCat::offWall()
+{
+	isWall = false;
 }
 

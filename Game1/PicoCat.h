@@ -25,9 +25,15 @@ private:
 	float		scalar;
 	float		gravity;
 
+	float		gravityPlus;
+
 	//블럭
 	float		blockOn;
 	bool		isOn;
+
+	//벽
+	float		wallOn;
+	bool		isWall;
 
 	//점프여부 :: 바닥에 닿으면 초기화 :: isOn = true 일때
 	bool		isJump;
@@ -51,5 +57,7 @@ public:
 	void onBlock(float obPosY);
 	void offBlock();
 
+	void onWall(float obPosX, float obScaleX);
+	void offWall();
 };
 

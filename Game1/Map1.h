@@ -2,26 +2,45 @@
 class Map1
 {
 	//창크기 박스
-	ObRect* mapBox = new ObRect();
+	ObRect*		mapBox = new ObRect();
+	Vector2		liftDir{ DOWN };
+
+	bool		isPress{ false }; //버튼 눌렸니
+	bool		isOnce{ true }; //한번만 할거니까 일회용 체커
+	bool		isOpen{ false }; //main에서 조건맞으면 문 이미지 변경
+
+	ObImage* key = new ObImage(L"key.PNG");
 
 public:
-	ObImage* wall[2];
-	ObImage* floor[3];
-	ObImage* stair[3];
+	ObImage*	wall[2];
+	ObImage*	floor[3];
+	ObImage*	stair[3];
 
 	//트리거 맞추면 나오는 바닥 :: MovPos해주고 특정위치가면 멈추도록 해줘야함
-	ObImage* floorLF;
+	ObImage*	floorLF;
 
 	//인원수따라 위아래로 움직이는 바닥
-	ObImage* floorUpdown;
+	ObImage*	lift;
+
+	ObImage* door;
+	ObImage* doorOP;
 
 public:
+
+	ObRect*		button;
 
 	Map1();
 	~Map1();
 
 	void Update();
 	void Render();
+
+	void Pressed();
+	
+	void openDoor();
+
+	void stageOpen();
+	void stageClose();
 
 };
 

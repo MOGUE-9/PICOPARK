@@ -3,7 +3,7 @@
 Title::Title()
 {
 	//창크기 박스
-	mapBox->SetWorldPos(Vector2(0.0f,0.0f));
+	mapBox->SetWorldPos(Vector2(0.0f, 240.0f));
 	mapBox->scale = Vector2(app.GetWidth(), app.GetHeight());
 	mapBox->isFilled = false;
 	mapBox->colOnOff = false;
@@ -63,7 +63,6 @@ void Title::Update()
 	}
 
 
-
 	mapBox->Update();
 	name->Update();
 	floor->Update();
@@ -103,4 +102,8 @@ void Title::stageClose()
 	floor->colOnOff = false;
 	door->colOnOff = false;
 	doorOP->colOnOff = false;
+
+	door->visible = true;
+	doorOP->visible = false;
+	isOpen = false;
 }

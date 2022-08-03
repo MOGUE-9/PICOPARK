@@ -4,6 +4,7 @@
 
 enum class STAGE
 {
+	NONE,
 	TITLE,
 	ST_1,
 	ST_2
@@ -17,6 +18,8 @@ private:
 	Map1*		firstMap;
 
 	PicoCat*	player;
+	bool		isFull; //리프트 인원 체크
+	Vector2		liftDir{ DOWN };
 
 	STAGE		stage{ STAGE::TITLE };
 

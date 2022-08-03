@@ -34,8 +34,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Txt", "Txt", "{BC1DD457-26F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sound", "Sound", "{031D9208-75CB-45ED-AE3F-F9B0AA28E8CC}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\Desktop\Framework\Contents\Sound\bgm.wav = ..\..\Desktop\Framework\Contents\Sound\bgm.wav
-		..\..\Desktop\Framework\Contents\Sound\gun.wav = ..\..\Desktop\Framework\Contents\Sound\gun.wav
+		Contents\Sound\01Spring.mp3 = Contents\Sound\01Spring.mp3
+		Contents\Sound\02Bounds.mp3 = Contents\Sound\02Bounds.mp3
+		Contents\Sound\03Doremi.mp3 = Contents\Sound\03Doremi.mp3
+		Contents\Sound\04Hands.mp3 = Contents\Sound\04Hands.mp3
+		Contents\Sound\05Flying.mp3 = Contents\Sound\05Flying.mp3
+		Contents\Sound\bgm.wav = Contents\Sound\bgm.wav
+		Contents\Sound\gun.wav = Contents\Sound\gun.wav
+		Contents\Sound\jumpSound.mp3 = Contents\Sound\jumpSound.mp3
+		..\..\..\..\..\새 폴더\jumSFX.mp3 = ..\..\..\..\..\새 폴더\jumSFX.mp3
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{B2CB356A-0022-4EAF-BFEF-D1D1CF61CDB1}"
@@ -48,6 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{B2CB35
 		Contents\Images\door.png = Contents\Images\door.png
 		Contents\Images\doorOpen.png = Contents\Images\doorOpen.png
 		Contents\Images\floor.png = Contents\Images\floor.png
+		Contents\Images\key.PNG = Contents\Images\key.PNG
 		Contents\Images\LeftRight.png = Contents\Images\LeftRight.png
 		Contents\Images\movFloor.png = Contents\Images\movFloor.png
 		Contents\Images\pepe.png = Contents\Images\pepe.png
