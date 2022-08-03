@@ -71,7 +71,7 @@ void PicoCat::Update()
 	if (col->GetWorldPos().y < -app.GetHalfHeight())
 	{
 		col->SetWorldPosX(col->GetWorldPos().x - 200.0f);
-		col->SetWorldPosY(app.GetHalfHeight());
+		col->SetWorldPosY(app.GetHalfHeight() + 240.0f);
 	}
 
 	//블럭 충돌-> 높이 고정

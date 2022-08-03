@@ -36,30 +36,30 @@ void Main::Update()
 		CAM->position.x += 200.0f * DELTA;
 	}
 
-	//if (INPUT->KeyDown(VK_UP) || INPUT->KeyDown('W'))
-	//{
-	//	SOUND->Stop("jump");
-	//	SOUND->Play("jump");
-	//}
+	if (INPUT->KeyDown(VK_UP) || INPUT->KeyDown('W'))
+	{
+		SOUND->Stop("jump");
+		SOUND->Play("jump");
+	}
 
-	//if (stage == STAGE::TITLE)
-	//{
-	//	SOUND->Stop("Stage1");
-	//	SOUND->Play("title");
-	//}
+	if (stage == STAGE::TITLE)
+	{
+		SOUND->Stop("Stage1");
+		SOUND->Play("title");
+	}
 
 	if (stage == STAGE::ST_1)
 	{
-		//SOUND->Stop("title");
-		//SOUND->Play("Stage1");
+		SOUND->Stop("title");
+		SOUND->Play("Stage1");
 
 
 		//우측 맵 끝에 닿았을때 더 못가게 막는 update					// 960*0.5  = -480 + 30 + 내scale*0.5
-		//player->col->SetWorldPosX(Utility::Saturate(player->col->GetWorldPos().x, -426.0f , 2775.0f)); //2800-25(플레이어 크기)
+		player->col->SetWorldPosX(Utility::Saturate(player->col->GetWorldPos().x, -480.0f , 2775.0f)); //2800-25(플레이어 크기)
 	
 		if (isFull)
 		{
-			cout << firstMap->lift->GetWorldPos().y << endl;
+			//cout << firstMap->lift->GetWorldPos().y << endl;
 	
 												//출구 바닥 높이
 			if (firstMap->lift->GetWorldPos().y >= 260.0f)
@@ -104,7 +104,7 @@ void Main::LateUpdate()
 	Vector2 velocity = player->col->GetWorldPos() - CAM->position;
 	CAM->position += velocity * 5.0f * DELTA;
 
-	///메인
+	///타이틀
 	if (stage==STAGE::TITLE)
 	{
 		CAM->position.y = 240.0f;
@@ -187,31 +187,60 @@ void Main::LateUpdate()
 		player->Update();
 		firstMap->Update();
 
+		if (player->col->Intersect(firstMap->floorLF))
+		{
+			player->onBlock(firstMap->floorLF->GetWorldPos().y);
+		}
+		player->Update();
+
+
 		//리프트 밟기
 		if (player->col->Intersect(firstMap->lift))
 		{
-			if (firstMap->lift->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
+			if (firstMap->lift->GetWorldPos().y - 5.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
 			{
 				player->onBlock(firstMap->lift->GetWorldPos().y);
 				isFull = true;
 			}
-			else 
-			{
-				player->onWall(firstMap->lift->GetWorldPivot().x, firstMap->lift->scale.x);
-			}
 
-			
+		}
+		else if (player->headCol->Intersect(firstMap->lift))
+		{
+			if (INPUT->KeyPress(VK_RIGHT))
+			{
+				//내가 벽 좌측
+				if (player->col->GetWorldPos().x < firstMap->lift->GetWorldPos().x)
+				{
+					// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
+					int wallOn = firstMap->lift->GetWorldPos().x - firstMap->lift->scale.x * 0.5f - 22.0f;
+
+					player->col->SetWorldPosX(wallOn);
+					//player->col->SetWorldPosX(2390.0f);
+				}
+			}
+			else
+			{
+				float liftOn = player->headCol->GetWorldPos().y + player->headCol->scale.y;
+				//내 머리위에 발판있을때
+				if (liftOn < firstMap->lift->GetWorldPos().y)
+				{
+					liftOn += 10.0f;
+					firstMap->lift->SetWorldPosY(liftOn);
+				}
+			}
 		}
 		else
 		{
 			isFull = false;
 			player->offBlock();
 		}
+		firstMap->lift->Update();
 		player->Update();
 
 		//벽 충돌
 		for (int i = 0; i < 2; i++)
 		{
+			//벽밟고 서기				// 숫자를 너무 딱 맞추니까 충돌처리날때는 더 낮아서 오차 추가
 			if (player->col->Intersect(firstMap->wall[i]))
 			{
 
@@ -224,40 +253,60 @@ void Main::LateUpdate()
 				//cout << firstMap->wall[i]->GetWorldPivot().x << endl;
 				//cout << player->col->GetWorldPivot().x << endl; 
 
-				//벽밟고 서기				// 숫자를 너무 딱 맞추니까 충돌처리날때는 더 낮아서 오차 추가
-				if (firstMap->wall[i]->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
-				{
-					벽 OFFSET_T로 바꿈
+				//if (firstMap->wall[i]->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
+				//{
+					//벽 OFFSET_T로 바꿈
 					player->onBlock(firstMap->wall[i]->GetWorldPos().y);
 					break;
-				}
+				//}
 
-				else //(dir.y > 0.0f)
-				{
-					//내가 벽 좌측
-					if (player->col->GetWorldPos().x < firstMap->wall[i]->GetWorldPos().x)
-					{
-						// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
-						int wallOn = firstMap->wall[i]->GetWorldPos().x - firstMap->wall[i]->scale.x * 0.5f - 22.0f;
+				//else //(dir.y > 0.0f)
+				//{
+				//	//내가 벽 좌측
+				//	if (player->col->GetWorldPos().x < firstMap->wall[i]->GetWorldPos().x)
+				//	{
+				//		// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
+				//		int wallOn = firstMap->wall[i]->GetWorldPos().x - firstMap->wall[i]->scale.x * 0.5f - 22.0f;
 
-						player->col->SetWorldPosX(wallOn);
-						break;
-						//player->col->SetWorldPosX(2390.0f);
-					}
-					//내가 벽 우측
-					else if (player->col->GetWorldPos().x > firstMap->wall[i]->GetWorldPos().x)
-					{
-						int wallOn = firstMap->wall[i]->GetWorldPos().x + firstMap->wall[i]->scale.x * 0.5f + 22.0f;
+				//		player->col->SetWorldPosX(wallOn);
+				//		break;
+				//		//player->col->SetWorldPosX(2390.0f);
+				//	}
+				//	//내가 벽 우측
+				//	else if (player->col->GetWorldPos().x > firstMap->wall[i]->GetWorldPos().x)
+				//	{
+				//		int wallOn = firstMap->wall[i]->GetWorldPos().x + firstMap->wall[i]->scale.x * 0.5f + 22.0f;
 
-						player->col->SetWorldPosX(wallOn);
-						break;
-					}
+				//		player->col->SetWorldPosX(wallOn);
+				//		break;
+				//	}
 
-				}
+				//}
 
 				
 			}
-			
+			//벽의 옆구리 비비기
+			else if (player->headCol->Intersect(firstMap->wall[i]))
+			{
+				//내가 벽 좌측
+				if (player->col->GetWorldPos().x < firstMap->wall[i]->GetWorldPos().x)
+				{
+					// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
+					int wallOn = firstMap->wall[i]->GetWorldPos().x - firstMap->wall[i]->scale.x * 0.5f - 22.0f;
+
+					player->col->SetWorldPosX(wallOn);
+					break;
+					//player->col->SetWorldPosX(2390.0f);
+				}
+				//내가 벽 우측
+				else if (player->col->GetWorldPos().x > firstMap->wall[i]->GetWorldPos().x)
+				{
+					int wallOn = firstMap->wall[i]->GetWorldPos().x + firstMap->wall[i]->scale.x * 0.5f + 22.0f;
+
+					player->col->SetWorldPosX(wallOn);
+					break;
+				}
+			}
 			else
 			{
 				player->offBlock();
@@ -266,83 +315,88 @@ void Main::LateUpdate()
 		}
 		player->Update();
 
-
+		//계단충돌
 		for (int i = 0; i < 3; i++)
 		{
-			//계단충돌
 			if (player->col->Intersect(firstMap->stair[i]))
 			{
-				if (firstMap->stair[i]->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
-				{
+				//if (firstMap->stair[i]->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
+				//{
 					//벽 OFFSET_T로 바꿈
-					player->onBlock(firstMap->stair[i]->GetWorldPos().y);
+				player->onBlock(firstMap->stair[i]->GetWorldPos().y);
+				//}
+
+			}
+			else if (player->headCol->Intersect(firstMap->stair[i]))
+			{
+				//내가 좌측
+				if (player->col->GetWorldPos().x < firstMap->stair[i]->GetWorldPos().x)
+				{
+					// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
+					int wallOn = firstMap->stair[i]->GetWorldPos().x - firstMap->stair[i]->scale.x * 0.5f - 22.0f;
+
+					player->col->SetWorldPosX(wallOn);
+					break;
+					//player->col->SetWorldPosX(2390.0f);
+				}
+				//내가 우측
+				else if (player->col->GetWorldPos().x > firstMap->stair[i]->GetWorldPos().x)
+				{
+					int wallOn = firstMap->stair[i]->GetWorldPos().x + firstMap->stair[i]->scale.x * 0.5f + 22.0f;
+
+					player->col->SetWorldPosX(wallOn);
 					break;
 				}
-				else 
-				{
-					//내가 좌측
-					if (player->col->GetWorldPos().x < firstMap->stair[i]->GetWorldPos().x)
-					{
-						// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
-						int wallOn = firstMap->stair[i]->GetWorldPos().x - firstMap->stair[i]->scale.x * 0.5f - 22.0f;
-
-						player->col->SetWorldPosX(wallOn);
-						break;
-						//player->col->SetWorldPosX(2390.0f);
-					}
-					//내가 우측
-					else if (player->col->GetWorldPos().x > firstMap->stair[i]->GetWorldPos().x)
-					{
-						int wallOn = firstMap->stair[i]->GetWorldPos().x + firstMap->stair[i]->scale.x * 0.5f + 22.0f;
-
-						player->col->SetWorldPosX(wallOn);
-						break;
-					}
-					//player->onWall(firstMap->stair[i]->GetWorldPivot().x, firstMap->stair[i]->scale.x);
-					//break;
-				}
-				
+				//player->onWall(firstMap->stair[i]->GetWorldPivot().x, firstMap->stair[i]->scale.x);
+				//break;
 			}
 			else
 			{
-				//player->offWall();
+				player->offWall();
 				player->offBlock();
 			}
+		}
+		player->Update();
 
-			//바닥충돌
+		//바닥충돌
+		for (int i = 0; i < 3; i++)
+		{
 			if (player->col->Intersect(firstMap->floor[i]))
 			{
-				if (firstMap->floor[i]->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
-				{
+				//if (firstMap->floor[i]->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
+				//{
 					player->onBlock(firstMap->floor[i]->GetWorldPos().y);
 					break;
-				}
-				else
+				//}
+
+			}
+			else if (player->headCol->Intersect(firstMap->floor[i]))
+			{
+				//내가 좌측
+				if (player->col->GetWorldPos().x < firstMap->floor[i]->GetWorldPos().x)
 				{
-					//좌측
-					if (player->col->GetWorldPivot().x < firstMap->floor[i]->GetWorldPivot().x)
-					{
-						// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
-						float wallOn = firstMap->floor[i]->GetWorldPivot().x - firstMap->floor[i]->scale.x * 0.5f - 25.0f;
-						player->col->SetWorldPosX(wallOn);
-					}
-					//우측
-					else if (player->col->GetWorldPivot().x > firstMap->floor[i]->GetWorldPivot().x)
-					{
-						float wallOn = firstMap->floor[i]->GetWorldPivot().x + firstMap->floor[i]->scale.x * 0.5f + 25.0f;
-						player->col->SetWorldPosX(wallOn);
+					// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
+					int wallOn = firstMap->floor[i]->GetWorldPos().x - firstMap->floor[i]->scale.x * 0.5f - 22.0f;
 
-					}
+					player->col->SetWorldPosX(wallOn);
+					break;
+					//player->col->SetWorldPosX(2390.0f);
+				}
+				//내가 우측
+				else if (player->col->GetWorldPos().x > firstMap->floor[i]->GetWorldPos().x)
+				{
+					int wallOn = firstMap->floor[i]->GetWorldPos().x + firstMap->floor[i]->scale.x * 0.5f + 22.0f;
 
-					//player->onWall(firstMap->floor[i]->GetWorldPivot().x, firstMap->floor[i]->scale.x);
+					player->col->SetWorldPosX(wallOn);
 					break;
 				}
-
 			}
 			else
 			{
+				player->offWall();
 				player->offBlock();
 			}
+			
 		}
 		player->Update();
 
