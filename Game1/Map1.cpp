@@ -8,7 +8,15 @@ Map1::Map1()
 	mapBox->isFilled = false;
 	mapBox->colOnOff = false;
 
+	keyBox->scale = Vector2(36.0f, 72.0f) * 0.5f;
+	keyBox->SetWorldPos(Vector2(2100.0f, 240.0f));
+	keyBox->isFilled = false;
+
 	key->scale = Vector2(36.0f, 72.0f) * 0.5f;
+	key->SetParentRT(*keyBox);
+	//key->SetWorldPos(Vector2(2100.0f, 240.0f));
+	key->collider = COLLIDER::RECT;
+
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -111,6 +119,8 @@ Map1::Map1()
 	//doorOP->SetLocalPosY(app.GetHeight() * 0.5f);
 	doorOP->visible = false;
 	doorOP->colOnOff = false;
+
+	SOUND->AddSound("button.mp3", "button", false);
 }
 
 Map1::~Map1()
@@ -133,6 +143,7 @@ void Map1::Update()
 		
 	if (isPress && isOnce)
 	{
+
 		button->scale.y = 4.0f;
 
 		floorLF->MoveWorldPos(LEFT * 100.0f * DELTA);
@@ -140,6 +151,7 @@ void Map1::Update()
 		if (floorLF->Intersect(stair[2]))
 		{
 			floorLF->SetWorldPosX(1375.0f);
+
 			isOnce = false;
 		}
 	}
@@ -162,6 +174,7 @@ void Map1::Update()
 	door->Update();
 	doorOP->Update();
 	lift->Update();
+	keyBox->Update();
 	key->Update();
 }
 
@@ -189,13 +202,19 @@ void Map1::Render()
 	door->Render();
 	doorOP->Render();
 	key->Render();
+	keyBox->Render();
+
 
 }
 
 void Map1::Pressed()
 {
 	isPress = true;
-
+	if (!isButton)
+	{
+		SOUND->Play("button");
+		isButton = true;
+	}
 }
 
 void Map1::openDoor()
@@ -251,6 +270,7 @@ void Map1::stageClose()
 	doorOP->visible = false;
 	isOpen = false;
 
+	key->SetParentRT(*keyBox);
 	floorLF->SetLocalPosX(-750.0f);
 	button->scale.y = 10.0f;
 	isPress = false;

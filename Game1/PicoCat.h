@@ -2,6 +2,13 @@
 enum class CATSTAT
 {
 	STAND,
+	RIGHTPRESS,
+	RIGHTUP,
+	LEFTPRESS,
+	LEFTUP,
+	JUMPDOWN,
+	JUMPUP,
+
 	WALK,
 	PUSH,
 	JUMP
@@ -17,9 +24,6 @@ private:
 	ObImage*	walk = new ObImage(L"0_walkSprite.png");
 	ObImage*	push = new ObImage(L"0_pushSprite.png");
 	ObImage*	jump = new ObImage(L"0_jump1.png");
-
-	//현재상태
-	CATSTAT		stat;
 	
 	Vector2		direction;
 	float		scalar;
@@ -38,6 +42,11 @@ private:
 	//점프여부 :: 바닥에 닿으면 초기화 :: isOn = true 일때
 	bool		isJump;
 	float		jumpTime;
+
+public:
+
+	//현재상태
+	CATSTAT		stat;
 
 public:
 

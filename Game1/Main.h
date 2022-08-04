@@ -1,6 +1,5 @@
 #pragma once
-#define FMAX 8
-#define RMAX 3
+#define PMAX 2
 
 enum class STAGE
 {
@@ -15,13 +14,19 @@ class Main : public Scene
 private:
 	
 	Title*		titleMap;
-	Map1*		firstMap;
+	STAGE		stage{ STAGE::TITLE };
 
-	PicoCat*	player;
+	int			pNum;
+
+	//PicoCat*	player;
+	PicoCat*	player[2];
+
+
+	Map1*		firstMap;
 	bool		isFull; //리프트 인원 체크
 	Vector2		liftDir{ DOWN };
-
-	STAGE		stage{ STAGE::TITLE };
+	bool		isKey{ false };
+	Vector2		keyPos{ -50.0f, 50.0f };
 
 
 public:

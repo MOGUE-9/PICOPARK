@@ -5,11 +5,13 @@ class Map1
 	ObRect*		mapBox = new ObRect();
 	Vector2		liftDir{ DOWN };
 
+	ObRect*		keyBox = new ObRect();
+
+	bool		isButton{ false }; //버튼 소리 났니
 	bool		isPress{ false }; //버튼 눌렸니
 	bool		isOnce{ true }; //한번만 할거니까 일회용 체커
 	bool		isOpen{ false }; //main에서 조건맞으면 문 이미지 변경
 
-	ObImage* key = new ObImage(L"key.PNG");
 
 public:
 	ObImage*	wall[2];
@@ -21,6 +23,8 @@ public:
 
 	//인원수따라 위아래로 움직이는 바닥
 	ObImage*	lift;
+	ObImage*	key = new ObImage(L"key.PNG");
+
 
 	ObImage* door;
 	ObImage* doorOP;

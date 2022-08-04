@@ -40,9 +40,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sound", "Sound", "{031D9208
 		Contents\Sound\04Hands.mp3 = Contents\Sound\04Hands.mp3
 		Contents\Sound\05Flying.mp3 = Contents\Sound\05Flying.mp3
 		Contents\Sound\bgm.wav = Contents\Sound\bgm.wav
+		Contents\Sound\button.mp3 = Contents\Sound\button.mp3
 		Contents\Sound\gun.wav = Contents\Sound\gun.wav
 		Contents\Sound\jumpSound.mp3 = Contents\Sound\jumpSound.mp3
 		..\..\..\..\..\새 폴더\jumSFX.mp3 = ..\..\..\..\..\새 폴더\jumSFX.mp3
+		Contents\Sound\keyGet.mp3 = Contents\Sound\keyGet.mp3
+		Contents\Sound\lockDoor.mp3 = Contents\Sound\lockDoor.mp3
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{B2CB356A-0022-4EAF-BFEF-D1D1CF61CDB1}"
