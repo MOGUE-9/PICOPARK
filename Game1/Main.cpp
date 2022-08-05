@@ -248,6 +248,55 @@ void Main::Update()
 		}
 		//firstMap->lift->SetWorldPosY(Utility::Saturate(firstMap->lift->GetWorldPos().y, -200.0f, 70.0f));
 
+		//문열기
+		for (int j = 0; j < pNum; j++)
+		{
+			//닫힌문 door과 intersect 체크
+			if (player[j]->col->Intersect(firstMap->door))
+			{
+				//문 앞에서 down 키 눌렀을 때
+				if (INPUT->KeyDown(VK_DOWN))
+				{
+					//열쇠 유무 체크
+					//if (player[j]->isHave)
+					//{
+						//있으면 소리나고 문열림
+					SOUND->Stop("doorSound");
+					SOUND->Play("doorSound");
+					firstMap->openDoor();
+					//}
+				}
+			}
+			//열린문 doorOP랑 intersect 체크
+			if (player[j]->col->Intersect(firstMap->doorOP))
+			{
+				//열린문 앞에서 down 키 눌렀을 때
+				if (INPUT->KeyDown(VK_DOWN))
+				{
+					player[j]->isEnd = true;
+				}
+			}
+		}
+
+		//플레이어 위치 초기 위치로 옮기기
+		if (player[0]->isEnd && player[1]->isEnd)
+		{
+			for (int j = 0; j < pNum; j++)
+			{
+				player[j]->isEnd = false;
+				player[j]->col->SetWorldPos(Vector2(0.0f, 0.0f));
+			}
+
+			firstMap->stageClose();
+			isKey = false;
+
+			titleMap->stageOpen();
+
+			stage = STAGE::TITLE;
+		}
+
+
+
 	}
 
 	//cout << "포" << endl;
@@ -378,127 +427,128 @@ void Main::LateUpdate()
 
 		//다인 코드
 #if 1
-		//열쇠
-		for (int i = 0; i < pNum; i++)
-		{
-			if (player[i]->col->Intersect(firstMap->key))
-			{
-				if (!isKey)
-				{
-					SOUND->Play("key");
-					firstMap->key->SetParentT(*player[i]->col);
-					firstMap->key->SetLocalPos(Vector2(0.0f, 0.0f));
-					//firstMap->key->SetLocalPos(Vector2(-50.0f, 50.0f));
-					isKey = true;
-				}
-			}
-			if (isKey)
-			{
-				Vector2 dir = player[i]->headCol->GetWorldPos() + keyPos - firstMap->key->GetWorldPos();
-				firstMap->key->MoveWorldPos(dir * 10.0f * DELTA);
+		////열쇠
+		//for (int j = 0; j < pNum; j++)
+		//{
+		//	if (player[j]->col->Intersect(firstMap->key))
+		//	{
+		//		if (!isKey)
+		//		{
+		//			SOUND->Play("key");
+		//			firstMap->key->SetParentT(*player[j]->col);
+		//			firstMap->key->SetLocalPos(Vector2(0.0f, 0.0f));
+		//			//firstMap->key->SetLocalPos(Vector2(-50.0f, 50.0f));
+		//			isKey = true;
+		//		}
+		//	}
+		//	if (isKey)
+		//	{
+		//		Vector2 dir = player[j]->headCol->GetWorldPos() + keyPos - firstMap->key->GetWorldPos();
+		//		firstMap->key->MoveWorldPos(dir * 10.0f * DELTA);
 
-				if (INPUT->KeyPress(VK_RIGHT))
-				{
-					keyPos.x = -50.0f;
-				}
-				else if (INPUT->KeyPress(VK_LEFT))
-				{
-					keyPos.x = 50.0f;
-				}
-			}
-			firstMap->key->Update();
-		}
+		//		if (INPUT->KeyPress(VK_RIGHT))
+		//		{
+		//			keyPos.x = -50.0f;
+		//		}
+		//		else if (INPUT->KeyPress(VK_LEFT))
+		//		{
+		//			keyPos.x = 50.0f;
+		//		}
+		//	}
+		//	firstMap->key->Update();
+		//}
 
-		//문열기
-		for (int i = 0; i < pNum; i++)
-		{
-			if (player[i]->col->Intersect(firstMap->door))
-			{
-				if (INPUT->KeyDown(VK_DOWN))
-				{
-					SOUND->Stop("doorSound");
-					SOUND->Play("doorSound");
-					firstMap->openDoor();
-				}
-			}
-			//스테이지 이동
-			else if (player[i]->col->Intersect(firstMap->doorOP))
-			{
-				if (INPUT->KeyDown(VK_DOWN))
-				{
-					firstMap->stageClose();
-					isKey = false;
+		
 
-					titleMap->stageOpen();
+		//for (int j = 0; j < pNum; j++)
+		//{
+		//	if (player[j]->col->Intersect(firstMap->door))
+		//	{
+		//		if (INPUT->KeyDown(VK_DOWN))
+		//		{
+		//			SOUND->Stop("doorSound");
+		//			SOUND->Play("doorSound");
+		//			firstMap->openDoor();
+		//		}
+		//	}
+		//	//스테이지 이동
+		//	else if (player[j]->col->Intersect(firstMap->doorOP))
+		//	{
+		//		if (INPUT->KeyDown(VK_DOWN))
+		//		{
+		//			firstMap->stageClose();
+		//			isKey = false;
 
-					player[i]->col->SetWorldPos(Vector2(0.0f, 0.0f));
-					stage = STAGE::TITLE;
-				}
-			}
-		}
+		//			titleMap->stageOpen();
 
-		for (int i = 0; i < pNum; i++)
+		//			player[j]->col->SetWorldPos(Vector2(0.0f, 0.0f));
+		//			stage = STAGE::TITLE;
+		//		}
+		//	}
+		//}
+
+
+		for (int j = 0; j < pNum; j++)
 		{
 			//버튼밟기
-			if (player[i]->col->Intersect(firstMap->button))
+			if (player[j]->col->Intersect(firstMap->button))
 			{
 				firstMap->Pressed();
-				//SOUND->Stop("button");
-				//SOUND->Play("button");
-				player[i]->onBlock(firstMap->button->GetWorldPos().y + firstMap->button->scale.y);
-				player[i]->Update();
+
+				player[j]->onBlock(firstMap->button->GetWorldPos().y + firstMap->button->scale.y);
+				player[j]->Update();
 			}
 			else
 			{
-				player[i]->offBlock();
-				player[i]->Update();
+				player[j]->offBlock();
+				player[j]->Update();
 			}
 			firstMap->button->Update();
 		}
 
 		// <<로 이동하는 바닥
-		for (int i = 0; i < pNum; i++)
+		for (int j = 0; j < pNum; j++)
 		{
-			if (player[i]->col->Intersect(firstMap->floorLF))
+			if (player[j]->col->Intersect(firstMap->floorLF))
 			{
-				player[i]->onBlock(firstMap->floorLF->GetWorldPos().y);
-				player[i]->Update();
+				player[j]->onBlock(firstMap->floorLF->GetWorldPos().y);
+				player[j]->Update();
 			}
 			else
 			{
-				player[i]->offBlock();
-				player[i]->Update();
+				player[j]->offBlock();
+				player[j]->Update();
 			}
 		}
 
-		for (int i = 0; i < pNum; i++)
+		for (int j = 0; j < pNum; j++)
 		{
 			//리프트 밟기
-			if (player[i]->col->Intersect(firstMap->lift))
+			if (player[j]->col->Intersect(firstMap->lift))
 			{
-				if (firstMap->lift->GetWorldPos().y - 5.0f < player[i]->col->GetWorldPos().y)//(dir.y < 0.0f)
+				if (firstMap->lift->GetWorldPos().y - 5.0f < player[j]->col->GetWorldPos().y)//(dir.y < 0.0f)
 				{
-					player[i]->onBlock(firstMap->lift->GetWorldPos().y);
+					player[j]->onBlock(firstMap->lift->GetWorldPos().y);
 					isFull = true;
 				}
 
 			}
-			else if (player[i]->headCol->Intersect(firstMap->lift))
+			else if (player[j]->headCol->Intersect(firstMap->lift))
 			{
 				if (INPUT->KeyPress(VK_RIGHT))
 				{
 					//내가 벽 좌측
-					if (player[i]->col->GetWorldPos().x < firstMap->lift->GetWorldPos().x)
+					if (player[j]->col->GetWorldPos().x < firstMap->lift->GetWorldPos().x)
 					{
 						// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
 						int wallOn = firstMap->lift->GetWorldPos().x - firstMap->lift->scale.x * 0.5f - 22.0f;
 
-						player[i]->col->SetWorldPosX(wallOn);
+						player[j]->col->SetWorldPosX(wallOn);
 					}
 				}
 				else
 				{
-					float liftOn = player[i]->headCol->GetWorldPos().y + player[i]->headCol->scale.y;
+					float liftOn = player[j]->headCol->GetWorldPos().y + player[j]->headCol->scale.y;
 					//내 머리위에 발판있을때
 					if (liftOn < firstMap->lift->GetWorldPos().y)
 					{
@@ -510,138 +560,135 @@ void Main::LateUpdate()
 			else
 			{
 				isFull = false;
-				player[i]->offBlock();
+				player[j]->offBlock();
 			}
 			firstMap->lift->Update();
-			player[i]->Update();
+			player[j]->Update();
 		}
 
-		for (int i = 0; i < pNum; i++)
+		for (int j = 0; j < pNum; j++)
 		{
 			//벽 충돌
 			for (int i = 0; i < 2; i++)
 			{
 				//벽밟고 서기				// 숫자를 너무 딱 맞추니까 충돌처리날때는 더 낮아서 오차 추가
-				if (player[i]->col->Intersect(firstMap->wall[i]))
+				if (player[j]->col->Intersect(firstMap->wall[i]))
 				{
-					player[i]->onBlock(firstMap->wall[i]->GetWorldPos().y);
+					player[j]->onBlock(firstMap->wall[i]->GetWorldPos().y);
 				}
 				//벽의 옆구리 비비기
-				else if (player[i]->headCol->Intersect(firstMap->wall[i]))
+				else if (player[j]->headCol->Intersect(firstMap->wall[i]))
 				{
 					//내가 벽 좌측
-					if (player[i]->col->GetWorldPos().x < firstMap->wall[i]->GetWorldPos().x)
+					if (player[j]->col->GetWorldPos().x < firstMap->wall[i]->GetWorldPos().x)
 					{
 						// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
 						int wallOn = firstMap->wall[i]->GetWorldPos().x - firstMap->wall[i]->scale.x * 0.5f - 22.0f;
 
-						player[i]->col->SetWorldPosX(wallOn);
+						player[j]->col->SetWorldPosX(wallOn);
 						//player->col->SetWorldPosX(2390.0f);
 					}
 					//내가 벽 우측
-					else if (player[i]->col->GetWorldPos().x > firstMap->wall[i]->GetWorldPos().x)
+					else if (player[j]->col->GetWorldPos().x > firstMap->wall[i]->GetWorldPos().x)
 					{
 						int wallOn = firstMap->wall[i]->GetWorldPos().x + firstMap->wall[i]->scale.x * 0.5f + 22.0f;
 
-						player[i]->col->SetWorldPosX(wallOn);
+						player[j]->col->SetWorldPosX(wallOn);
 					}
 				}
 				else
 				{
-					player[i]->offBlock();
-					player[i]->offWall();
+					player[j]->offBlock();
+					player[j]->offWall();
 				}
 			}
-			player[i]->Update();
+			player[j]->Update();
 		}
 
 		for (int i = 0; i < 3; i++)
 		{
 			//바닥충돌
-			for (int i = 0; i < pNum; i++)
+			for (int j = 0; j < pNum; j++)
 			{
-				if (firstMap->floor[i]->Intersect(player[i]->col))
+				if (firstMap->floor[i]->Intersect(player[j]->col))
 				//if (player[i]->col->Intersect(firstMap->floor[i]))
 				{
-					player[i]->onBlock(firstMap->floor[i]->GetWorldPos().y);
+					player[j]->onBlock(firstMap->floor[i]->GetWorldPos().y);
 					//break;
 				}
-				else if (firstMap->floor[i]->Intersect(player[i]->headCol))
+				else if (firstMap->floor[i]->Intersect(player[j]->headCol))
 				//else if (player[i]->headCol->Intersect(firstMap->floor[i]))
 				{
 					//내가 좌측
-					if (player[i]->col->GetWorldPos().x < firstMap->floor[i]->GetWorldPos().x)
+					if (player[j]->col->GetWorldPos().x < firstMap->floor[i]->GetWorldPos().x)
 					{
 						int wallOn = firstMap->floor[i]->GetWorldPos().x - firstMap->floor[i]->scale.x * 0.5f - 22.0f;
 
-						player[i]->col->SetWorldPosX(wallOn);
+						player[j]->col->SetWorldPosX(wallOn);
 						//break;
 					}
 					//내가 우측
-					else if (player[i]->col->GetWorldPos().x > firstMap->floor[i]->GetWorldPos().x)
+					else if (player[j]->col->GetWorldPos().x > firstMap->floor[i]->GetWorldPos().x)
 					{
 						int wallOn = firstMap->floor[i]->GetWorldPos().x + firstMap->floor[i]->scale.x * 0.5f + 22.0f;
 
-						player[i]->col->SetWorldPosX(wallOn);
+						player[j]->col->SetWorldPosX(wallOn);
 						//break;
 					}
 				}
 				else
 				{
-					player[i]->offWall();
-					player[i]->offBlock();
+					player[j]->offWall();
+					player[j]->offBlock();
 					//break;
 				}
-				player[i]->Update();
+				player[j]->Update();
 			}
 			firstMap->floor[i]->Update();
 		}
 
-		//for (int i = 0; i < pNum; i++)
-		//{
-		//	//계단충돌
-		//	for (int i = 0; i < 3; i++)
-		//	{
-		//		if (player[i]->col->Intersect(firstMap->stair[i]))
-		//		{
-		//			//if (firstMap->stair[i]->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
-		//			//{
-						////벽 OFFSET_T로 바꿈
-		//			player[i]->onBlock(firstMap->stair[i]->GetWorldPos().y);
-		//			//}
+		for (int j = 0; j < pNum; j++)
+		{
+			//계단충돌
+			for (int i = 0; i < 3; i++)
+			{
+				if (player[j]->col->Intersect(firstMap->stair[i]))
+				{
+					//if (firstMap->stair[i]->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
+					//{
+						//벽 OFFSET_T로 바꿈
+					player[j]->onBlock(firstMap->stair[i]->GetWorldPos().y);
+					//}
 
-		//		}
-		//		else if (player[i]->headCol->Intersect(firstMap->stair[i]))
-		//		{
-		//			//내가 좌측
-		//			if (player[i]->col->GetWorldPos().x < firstMap->stair[i]->GetWorldPos().x)
-		//			{
-		//				int wallOn = firstMap->stair[i]->GetWorldPos().x - firstMap->stair[i]->scale.x * 0.5f - 22.0f;
+				}
+				else if (player[j]->headCol->Intersect(firstMap->stair[i]))
+				{
+					//내가 좌측
+					if (player[j]->col->GetWorldPos().x < firstMap->stair[i]->GetWorldPos().x)
+					{
+						int wallOn = firstMap->stair[i]->GetWorldPos().x - firstMap->stair[i]->scale.x * 0.5f - 22.0f;
 
-		//				player[i]->col->SetWorldPosX(wallOn);
-		//				break;
-		//			}
-		//			//내가 우측
-		//			else if (player[i]->col->GetWorldPos().x > firstMap->stair[i]->GetWorldPos().x)
-		//			{
-		//				int wallOn = firstMap->stair[i]->GetWorldPos().x + firstMap->stair[i]->scale.x * 0.5f + 22.0f;
+						player[j]->col->SetWorldPosX(wallOn);
+						break;
+					}
+					//내가 우측
+					else if (player[j]->col->GetWorldPos().x > firstMap->stair[i]->GetWorldPos().x)
+					{
+						int wallOn = firstMap->stair[i]->GetWorldPos().x + firstMap->stair[i]->scale.x * 0.5f + 22.0f;
 
-		//				player[i]->col->SetWorldPosX(wallOn);
-		//				break;
-		//			}
+						player[j]->col->SetWorldPosX(wallOn);
+						break;
+					}
 
-		//		}
-		//		else
-		//		{
-		//			player[i]->offWall();
-		//			player[i]->offBlock();
-		//		}
-		//	}
-		//	player[i]->Update();
-		//}
-
-
-
+				}
+				else
+				{
+					player[j]->offWall();
+					player[j]->offBlock();
+				}
+			}
+			player[j]->Update();
+		}
 
 #endif
 

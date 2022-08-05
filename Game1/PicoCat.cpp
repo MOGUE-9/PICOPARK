@@ -102,6 +102,11 @@ void PicoCat::Update()
 		col->SetWorldPosX(wallOn);
 	}
 
+	if (isEnd)
+	{
+		Endgame();
+	}
+
 	//오른쪽으로
 	if (stat == CATSTAT::RIGHTPRESS)
 	{
@@ -489,5 +494,15 @@ void PicoCat::onWall(float obPosX, float obScaleX)
 void PicoCat::offWall()
 {
 	isWall = false;
+}
+
+void PicoCat::Endgame()
+{
+	col->SetWorldPos(Vector2(2600.0f, 270.0f));
+	stand->visible = false;
+	walk->visible = false;
+	push->visible = false;
+	jump->visible = false;
+	
 }
 
