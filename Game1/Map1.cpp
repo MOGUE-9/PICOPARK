@@ -35,6 +35,7 @@ Map1::Map1()
 		//바닥 기본틀
 		floor[i] = new ObImage(L"floor.png");
 		floor[i]->SetParentRT(*mapBox);
+		floor[i]->colOnOff = true;
 		floor[i]->pivot = OFFSET_T;
 		floor[i]->collider = COLLIDER::RECT;
 		floor[i]->scale.y = 30.0f;
@@ -165,7 +166,7 @@ void Map1::Update()
 
 	for (int i = 0; i < 3; i++)
 	{
-		floor[i]->Update();
+		floor[i]->Update(); //여기서 액세스 위반생김 
 		stair[i]->Update();
 	}
 
@@ -186,16 +187,17 @@ void Map1::Render()
 	{
 		wall[i]->Render();
 	}
+
 	for (int i = 0; i < 3; i++)
 	{
 		floor[i]->Render();
 		stair[i]->Render();
 	}
-
+	
 	//floor[0]->Render();
 	//floor[1]->Render();
 
-
+	 
 	floorLF->Render();
 	button->Render();
 	lift->Render();

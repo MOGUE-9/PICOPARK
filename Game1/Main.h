@@ -19,8 +19,8 @@ private:
 	float		camScalar;
 
 	int			pNum;
-	PicoCat*	player;
-	//PicoCat*	player[2];
+	//PicoCat*	player;
+	PicoCat*	player[2];
 
 
 	Map1*		firstMap;

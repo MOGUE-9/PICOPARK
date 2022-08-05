@@ -55,12 +55,12 @@ Title::~Title()
 void Title::Update()
 {
 	//main에서 아래키 눌러서, 문 1회 열었을때, 열린 문 보여주고 colOn (열릴준비)
-	if (isOpen)
-	{
-		door->visible = false;
-		doorOP->visible = true;
-		doorOP->colOnOff = true;
-	}
+	//if (isOpen)
+	//{
+	//	door->visible = false;
+	//	doorOP->visible = true;
+	//	doorOP->colOnOff = true;
+	//}
 
 
 	mapBox->Update();
@@ -81,8 +81,12 @@ void Title::Render()
 
 void Title::openDoor()
 {
+	door->visible = false;
 	door->colOnOff = false;
-	isOpen = true;
+	//isOpen = true;
+
+	doorOP->visible = true;
+	doorOP->colOnOff = true;
 	
 }
 
