@@ -8,11 +8,13 @@ void Main::Init()
 
 	pNum = 2;
 
-	//player = new PicoCat();
-	for (int i = 0; i < pNum; i++)
-	{
-		player[i] = new PicoCat();
-	}
+	camScalar = 0.0f;
+
+	player = new PicoCat();
+	//for (int i = 0; i < pNum; i++)
+	//{
+	//	player[i] = new PicoCat();
+	//}
 
 	SOUND->AddSound("01Spring.mp3", "title", true);
 	SOUND->SetVolume("title", 0.1f);
@@ -38,6 +40,15 @@ void Main::Update()
 	//ImGuiColorEditFlags
 	//ImGui::ColorEdit4("d", (float*)&block->color, ImGuiColorEditFlags_PickerHueWheel);
 
+	//float velo = (player[0]->col->GetWorldPos().x + player[pNum - 1]->col->GetWorldPos().x) * 0.5f - CAM->position.x;
+	//Vector2 velocity;
+	//velocity.x = velo;
+
+	Vector2 velocity = player->col->GetWorldPos() - CAM->position;
+
+	CAM->position += velocity * camScalar * DELTA;
+
+
 	if (INPUT->KeyPress('L'))
 	{
 		CAM->position.x += 200.0f * DELTA;
@@ -50,7 +61,7 @@ void Main::Update()
 	}
 
 	///플레이어 이동
-#if 1
+#if 0
 	///1P
 	//오른쪽
 	if (INPUT->KeyPress(VK_RIGHT)/* || INPUT->KeyPress('D')*/)
@@ -126,96 +137,78 @@ void Main::Update()
 #endif
 
 	//solo
-#if 0
+#if 1
 	///플레이어 이동
 	//오른쪽
 	if (INPUT->KeyPress(VK_RIGHT) || INPUT->KeyPress('D'))
 	{
-		for (int i = 0; i < pNum; i++)
-		{
-			player[i]->stat = CATSTAT::RIGHTPRESS;
-		}
-		//player->stat = CATSTAT::RIGHTPRESS;
+		player->stat = CATSTAT::RIGHTPRESS;
 	}
 
 	//왼쪽으로
 	else if (INPUT->KeyPress(VK_LEFT) || INPUT->KeyPress('S'))
 	{
-		for (int i = 0; i < pNum; i++)
-		{
-			player[i]->stat = CATSTAT::LEFTPRESS;
-		}
-
-		//player->stat = CATSTAT::LEFTPRESS;
+		player->stat = CATSTAT::LEFTPRESS;
 	}
 	else
 	{
-		for (int i = 0; i < pNum; i++)
-		{
-			player[i]->stat = CATSTAT::STAND;
-		}
-		//player->stat = CATSTAT::STAND;
+		player->stat = CATSTAT::STAND;
 	}
 
 
 	//움직임 키 뗐을 때 :: 오른쪽
 	if (INPUT->KeyUp(VK_RIGHT) || INPUT->KeyUp('D'))
 	{
-		for (int i = 0; i < pNum; i++)
-		{
-			player[i]->stat = CATSTAT::RIGHTUP;
-		}
-		//player->stat = CATSTAT::RIGHTUP;
+		player->stat = CATSTAT::RIGHTUP;
 	}
 	//점프
 	else if (INPUT->KeyUp(VK_LEFT) || INPUT->KeyUp('S'))
 	{
-		for (int i = 0; i < pNum; i++)
-		{
-			player[i]->stat = CATSTAT::LEFTUP;
-		}
-		//player->stat = CATSTAT::LEFTUP;
+		player->stat = CATSTAT::LEFTUP;
 	}
 
 	//문 앞 아닐때만 점프 << 근데 이거 이렇게 하느니 그냥 ... 문 여는 키를 따로 주는게 나을듯
 	if (INPUT->KeyDown(VK_UP) || INPUT->KeyDown('W'))
 	{
-		for (int i = 0; i < pNum; i++)
-		{
-			player[i]->stat = CATSTAT::JUMPDOWN;
-		}
-		//player->stat = CATSTAT::JUMPDOWN;
+		player->stat = CATSTAT::JUMPDOWN;
 	}
 
 	//키 떼면 점프 1회 판정
 	if (INPUT->KeyUp(VK_UP) || INPUT->KeyUp('W'))
 	{
-		for (int i = 0; i < pNum; i++)
-		{
-			player[i]->stat = CATSTAT::JUMPUP;
-		}
-		//player->stat = CATSTAT::JUMPUP;
+		player->stat = CATSTAT::JUMPUP;
 	}
 
 #endif
 
 	if (stage == STAGE::TITLE)
 	{
+		camScalar = 0.0f;
+
+		player->scalar = 100.0f;
+
 		SOUND->Stop("Stage1");
-		SOUND->Play("title");
+		//SOUND->Play("title");
 	}
 
 	if (stage == STAGE::ST_1)
-	{
+	{                                                                                           
+		camScalar = 100.0f;
+		player->scalar = 80.0f;
+
 		SOUND->Stop("title");
-		SOUND->Play("Stage1");
+		//SOUND->Play("Stage1");
 
 		//우측 맵 끝에 닿았을때 더 못가게 막는 update					// 960*0.5  = -480 + 30 + 내scale*0.5
+	//멀티
+#if 0
 		for (int i = 0; i < pNum; i++)
 		{
 			player[i]->col->SetWorldPosX(Utility::Saturate(player[i]->col->GetWorldPos().x, -480.0f, 2775.0f));
 		}
-		//player->col->SetWorldPosX(Utility::Saturate(player->col->GetWorldPos().x, -480.0f , 2775.0f)); //2800-25(플레이어 크기)
+#endif
+
+		player->col->SetWorldPosX(Utility::Saturate(player->col->GetWorldPos().x, -480.0f , 2775.0f)); //2800-25(플레이어 크기)
 	
 		if (isFull)
 		{
@@ -251,11 +244,11 @@ void Main::Update()
 	//cout << firstMap->wall[0]->GetWorldPivot().y << endl;
 	//cout << player->col->GetWorldPivot().x << endl; 
 
-	for (int i = 0; i < pNum; i++)
-	{
-		player[i]->Update();
-	}
-	//player->Update();
+	//for (int i = 0; i < pNum; i++)
+	//{
+	//	player[i]->Update();
+	//}
+	player->Update();
 
 	titleMap->Update();
 	firstMap->Update();
@@ -264,28 +257,16 @@ void Main::Update()
 void Main::LateUpdate()
 {
 
-	float velo = (player[0]->col->GetWorldPos().x + player[pNum - 1]->col->GetWorldPos().x) * 0.5f - CAM->position.x;
-	Vector2 velocity;
-	velocity.x = velo;
-
-	//Vector2 velocity = player->col->GetWorldPos() - CAM->position;
-
-	CAM->position += velocity * 5.0f * DELTA;
 
 	///타이틀
 	if (stage == STAGE::TITLE)
 	{
 		CAM->position.y = 240.0f;
 		CAM->position.x = 0.0f;
-		//플레이어가 바닥의 UP방향에 있을 때만 충돌 :: 
-		// 양옆으로 부딪히면 좌우 위치에 고정되게하기 -> Title cpp에서?
-		if (true)
-		{
 
-		}
 
 		//다인플레이
-#if 1
+#if 0
 		for (int i = 0; i < pNum; i++)
 		{
 			//바닥과 충돌중일 때는 계속 위에 있기
@@ -330,7 +311,7 @@ void Main::LateUpdate()
 #endif
 
 		//솔로플레이
-#if 0
+#if 1
 
 		//바닥과 충돌중일 때는 계속 위에 있기
 		if (player->col->Intersect(titleMap->floor))
@@ -376,7 +357,7 @@ void Main::LateUpdate()
 		//CAM->position.x = Utility::Saturate(CAM->position.x, 0.0f, 2000.0f);
 
 		//다인 코드
-#if 1
+#if 0
 		for (int i = 0; i < pNum; i++)
 		{
 			//열쇠 따라다님
@@ -618,7 +599,7 @@ void Main::LateUpdate()
 #endif
 
 		//1플레이어 코드    
-#if 0 
+#if 1 
 
 		//열쇠 따라다님
 		if (player->col->Intersect(firstMap->key))
@@ -645,9 +626,7 @@ void Main::LateUpdate()
 			{
 				keyPos.x = 50.0f;
 			}
-
 		}
-
 		firstMap->key->Update();
 
 		//문열기
@@ -679,19 +658,16 @@ void Main::LateUpdate()
 		if (player->col->Intersect(firstMap->button))
 		{
 			firstMap->Pressed();
-			//SOUND->Stop("button");
-			//SOUND->Play("button");
 			player->onBlock(firstMap->button->GetWorldPos().y + firstMap->button->scale.y);
 		}
-		player->Update();
-		firstMap->Update();
+		//player->Update();
+		//firstMap->Update();
 
 		if (player->col->Intersect(firstMap->floorLF))
 		{
 			player->onBlock(firstMap->floorLF->GetWorldPos().y);
 		}
 		player->Update();
-
 
 		//리프트 밟기
 		if (player->col->Intersect(firstMap->lift))
@@ -701,7 +677,6 @@ void Main::LateUpdate()
 				player->onBlock(firstMap->lift->GetWorldPos().y);
 				isFull = true;
 			}
-
 		}
 		else if (player->headCol->Intersect(firstMap->lift))
 		{
@@ -733,7 +708,7 @@ void Main::LateUpdate()
 			isFull = false;
 			player->offBlock();
 		}
-		firstMap->lift->Update();
+		//firstMap->lift->Update();
 		player->Update();
 
 		//벽 충돌
@@ -751,7 +726,6 @@ void Main::LateUpdate()
 				//내가 벽 좌측
 				if (player->col->GetWorldPos().x < firstMap->wall[i]->GetWorldPos().x)
 				{
-					// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
 					int wallOn = firstMap->wall[i]->GetWorldPos().x - firstMap->wall[i]->scale.x * 0.5f - 22.0f;
 
 					player->col->SetWorldPosX(wallOn);
@@ -780,19 +754,18 @@ void Main::LateUpdate()
 		{
 			if (player->col->Intersect(firstMap->stair[i]))
 			{
-				//if (firstMap->stair[i]->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
-				//{
+				if (firstMap->stair[i]->GetWorldPos().y - 10.0f < player->col->GetWorldPos().y)//(dir.y < 0.0f)
+				{
 					//벽 OFFSET_T로 바꿈
-				player->onBlock(firstMap->stair[i]->GetWorldPos().y);
-				//}
-
+					player->onBlock(firstMap->stair[i]->GetWorldPos().y);
+					break;
+				}
 			}
 			else if (player->headCol->Intersect(firstMap->stair[i]))
 			{
 				//내가 좌측
 				if (player->col->GetWorldPos().x < firstMap->stair[i]->GetWorldPos().x)
 				{
-					// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
 					int wallOn = firstMap->stair[i]->GetWorldPos().x - firstMap->stair[i]->scale.x * 0.5f - 22.0f;
 
 					player->col->SetWorldPosX(wallOn);
@@ -811,7 +784,7 @@ void Main::LateUpdate()
 			}
 			else
 			{
-				player->offWall();
+				player->offWall();   
 				player->offBlock();
 			}
 		}
@@ -825,12 +798,16 @@ void Main::LateUpdate()
 				player->onBlock(firstMap->floor[i]->GetWorldPos().y);
 				break;
 			}
-			else if (player->headCol->Intersect(firstMap->floor[i]))
+			else
+			{
+				//player->offWall();
+				player->offBlock();
+			}
+			if (player->headCol->Intersect(firstMap->floor[i]))
 			{
 				//내가 좌측
 				if (player->col->GetWorldPos().x < firstMap->floor[i]->GetWorldPos().x)
 				{
-					// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
 					int wallOn = firstMap->floor[i]->GetWorldPos().x - firstMap->floor[i]->scale.x * 0.5f - 22.0f;
 
 					player->col->SetWorldPosX(wallOn);
@@ -849,10 +826,10 @@ void Main::LateUpdate()
 			else
 			{
 				player->offWall();
-				player->offBlock();
+				//player->offBlock();
 			}
 		}
-		player->Update();
+		//player->Update();
 		firstMap->Update();
 #endif
 
@@ -871,11 +848,11 @@ void Main::Render()
 		firstMap->Render();
 	}
 	//block->Render();
-	for (int i = 0; i < pNum; i++)
-	{
-		player[i]->Render();
-	}
-	//player->Render();
+	//for (int i = 0; i < pNum; i++)
+	//{
+	//	player[i]->Render();
+	//}
+	player->Render();
 }
 
 void Main::ResizeScreen()

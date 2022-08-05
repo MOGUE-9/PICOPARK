@@ -26,7 +26,6 @@ private:
 	ObImage*	jump = new ObImage(L"0_jump1.png");
 	
 	Vector2		direction;
-	float		scalar;
 	float		gravity;
 
 	float		gravityPlus;
@@ -44,6 +43,8 @@ private:
 	float		jumpTime;
 
 public:
+
+	float		scalar;
 
 	//현재상태
 	CATSTAT		stat;

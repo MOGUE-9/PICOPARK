@@ -16,10 +16,11 @@ private:
 	Title*		titleMap;
 	STAGE		stage{ STAGE::TITLE };
 
-	int			pNum;
+	float		camScalar;
 
-	//PicoCat*	player;
-	PicoCat*	player[2];
+	int			pNum;
+	PicoCat*	player;
+	//PicoCat*	player[2];
 
 
 	Map1*		firstMap;
