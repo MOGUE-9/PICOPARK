@@ -11,8 +11,8 @@ PicoCat::PicoCat()
 	col->scale = Vector2(25.0f, 40.0f);
 	col->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
-	col->visible = false;
-	headCol->visible = false;
+	//col->visible = false;
+	//headCol->visible = false;
 
 	headCol-> isFilled = false;
 	headCol->collider = COLLIDER::RECT;
@@ -463,12 +463,14 @@ void PicoCat::Update()
 
 void PicoCat::Render()
 {
-	col->Render();
-	headCol->Render();
+
 	stand->Render();
 	walk->Render();
 	jump->Render();
 	push->Render();
+
+	col->Render();
+	headCol->Render();
 
 }
 
