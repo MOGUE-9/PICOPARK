@@ -48,6 +48,9 @@ PicoCat::PicoCat()
 	gravityPlus = 0.0f; //누르는 시간에 따라서 더해지는 중력플러스 값
 
 	stat = CATSTAT::STAND;
+
+	//SOUND->AddSound("jumSFX.mp3", "jump", false);
+
 }
 
 PicoCat::~PicoCat()
@@ -106,88 +109,94 @@ void PicoCat::Update()
 	{
 		Endgame();
 	}
-
-	//오른쪽으로
-	if (stat == CATSTAT::RIGHTPRESS)
+	else
 	{
-		direction = RIGHT;
-		//col->MoveWorldPos(RIGHT * 100.0f * DELTA);
-
-		stand->visible = false;
-		jump->visible = false;
-
-		walk->visible = true;
-
-		stand->reverseLR = false;
-		walk->reverseLR = false;
-	}
-	//왼쪽으로
-	else if (stat == CATSTAT::LEFTPRESS)
-	{
-		direction = LEFT;
-		//col->MoveWorldPos(LEFT * 100.0f * DELTA);
-
-		stand->visible = false;
-		jump->visible = false;
-
-		walk->visible = true;
-
-		stand->reverseLR = true;
-		walk->reverseLR = true;
-	}
-	else if (stat == CATSTAT::STAND) direction = Vector2(0.0f, 0.0f);
-
-	//점프중에 움직임 키 뗐을 때 :: 오른쪽
-	if (stat == CATSTAT::RIGHTUP)
-	{
-		stand->visible = false;
-		walk->visible = false;
-
-		jump->visible = true;
-
-		jump->reverseLR = false;
-		stand->reverseLR = false;
-		walk->reverseLR = false;
-	}
-	else if (stat == CATSTAT::LEFTUP)
-	{
-		stand->visible = false;
-		walk->visible = false;
-
-		jump->visible = true;
-
-		jump->reverseLR = true;
-		stand->reverseLR = true;
-		walk->reverseLR = true;
-	}
-
-	//누르는 시간 따라서 올라가는 힘추가
-	if (INPUT->KeyPress(VK_UP) || INPUT->KeyPress('W'))
-	{
-	}
-
-	if (stat == CATSTAT::JUMPDOWN)
-	{
-		if (!isJump)
+		//오른쪽으로
+		if (stat == CATSTAT::RIGHTPRESS)
 		{
-			//바닥충돌 off
-			isOn = false;
+			direction = RIGHT;
+			//col->MoveWorldPos(RIGHT * 100.0f * DELTA);
 
-			gravity = -150.0f;
+			stand->visible = false;
+			jump->visible = false;
 
+			walk->visible = true;
+
+			stand->reverseLR = false;
+			walk->reverseLR = false;
+		}
+		//왼쪽으로
+		else if (stat == CATSTAT::LEFTPRESS)
+		{
+			direction = LEFT;
+			//col->MoveWorldPos(LEFT * 100.0f * DELTA);
+
+			stand->visible = false;
+			jump->visible = false;
+
+			walk->visible = true;
+
+			stand->reverseLR = true;
+			walk->reverseLR = true;
+		}
+		else if (stat == CATSTAT::STAND) direction = Vector2(0.0f, 0.0f);
+
+		//점프중에 움직임 키 뗐을 때 :: 오른쪽
+		if (stat == CATSTAT::RIGHTUP)
+		{
 			stand->visible = false;
 			walk->visible = false;
 
 			jump->visible = true;
+
+			jump->reverseLR = false;
+			stand->reverseLR = false;
+			walk->reverseLR = false;
+		}
+		else if (stat == CATSTAT::LEFTUP)
+		{
+			stand->visible = false;
+			walk->visible = false;
+
+			jump->visible = true;
+
+			jump->reverseLR = true;
+			stand->reverseLR = true;
+			walk->reverseLR = true;
 		}
 
+		//누르는 시간 따라서 올라가는 힘추가
+		if (INPUT->KeyPress(VK_UP) || INPUT->KeyPress('W'))
+		{
+		}
+
+		if (stat == CATSTAT::JUMPDOWN)
+		{
+			if (!isJump)
+			{
+				SOUND->Stop("jump");
+				SOUND->Play("jump");
+
+				//바닥충돌 off
+				isOn = false;
+
+				gravity = -150.0f;
+
+				stand->visible = false;
+				walk->visible = false;
+
+				jump->visible = true;
+			}
+
+		}
+
+		//키 떼면 점프 1회 판정
+		if (stat == CATSTAT::JUMPUP)
+		{
+			//isJump = true;
+		}
 	}
 
-	//키 떼면 점프 1회 판정
-	if (stat == CATSTAT::JUMPUP)
-	{
-		//isJump = true;
-	}
 
 #if 0  //키조종   
 	//오른쪽으로
@@ -503,6 +512,5 @@ void PicoCat::Endgame()
 	walk->visible = false;
 	push->visible = false;
 	jump->visible = false;
-	
 }
 

@@ -273,7 +273,10 @@ void Map1::stageClose()
 	isOpen = false;
 
 	key->SetParentRT(*keyBox);
+	key->visible = true;
+
 	floorLF->SetLocalPosX(-750.0f);
+
 	button->scale.y = 10.0f;
 	isPress = false;
 	isOnce = true;
