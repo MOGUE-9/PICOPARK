@@ -17,72 +17,68 @@ Map1::Map1()
 	//key->SetWorldPos(Vector2(2100.0f, 240.0f));
 	key->collider = COLLIDER::RECT;
 
-	///블럭셋팅 순서
-	// 0 , 1 , 2 --> floor // 3 , 4 , 5 --> stair // 6 , 7 --> wall
+	for (int i = 0; i < 2; i++)
+	{
+		//벽 기본틀
+		wall[i] = new ObImage(L"wall.png");
+		wall[i]->SetParentRT(*mapBox);
+		wall[i]->pivot = OFFSET_T;
+		wall[i]->collider = COLLIDER::RECT;
+		//창크기의 좌측에 맞추기 :: X좌표 = -app.GetHalfWidth().x (480) + scale.x * 0.5f; 
+		wall[i]->SetLocalPos(Vector2(-465.0f, app.GetHalfHeight()));
+		wall[i]->scale = Vector2(30.0f, app.GetHeight());
+	}
 
-	// 0 , 1 , 2 --> floor
-	///바닥 기본틀
 	for (int i = 0; i < 3; i++)
 	{
-		blocks[i] = new ObImage(L"floor.png");
-		blocks[i]->SetParentRT(*mapBox);
-		blocks[i]->colOnOff = true;
-		blocks[i]->pivot = OFFSET_T;
-		blocks[i]->collider = COLLIDER::RECT;
-		blocks[i]->scale.y = 30.0f;
-		blocks[i]->SetLocalPosY(-app.GetHalfHeight() + 30.0f);
-	}
-	//바닥 객체별로 X좌표 위치, 크기 재설정 해줘야함 :: Y는 동시에해도OK 어차피 다 맨아래 붙어있어서
-	blocks[0]->scale.x = app.GetWidth();
+		//바닥 기본틀
+		floor[i] = new ObImage(L"floor.png");
+		floor[i]->SetParentRT(*mapBox);
+		floor[i]->colOnOff = true;
+		floor[i]->pivot = OFFSET_T;
+		floor[i]->collider = COLLIDER::RECT;
+		floor[i]->scale.y = 30.0f;
+		floor[i]->SetLocalPosY(-app.GetHalfHeight() + 30.0f);
 
-	blocks[1]->SetLocalPosX(1000.0f);
-	blocks[1]->scale.x = 500.0f;
 
-	//floor[2]->SetLocalPosX(2600.0f);
-	blocks[2]->SetLocalPosX(2550.0f); //디버그하는데 1캐릭으로 땅에 안닿아서 옮김
-	blocks[2]->scale.x = 1500.0f;
-
-	///계단 기본틀
-	for (int i = 3; i < 6; i++)
-	{
-		blocks[i] = new ObImage(L"wall.png");
-		blocks[i]->SetParentRT(*mapBox);
-		blocks[i]->pivot = OFFSET_T;
-		blocks[i]->collider = COLLIDER::RECT;
-		blocks[i]->scale.x = 50.0f;
-		blocks[i]->SetLocalPosX(1250.0f);
+		//계단 기본틀
+		stair[i] = new ObImage(L"wall.png");
+		stair[i]->SetParentRT(*mapBox);
+		stair[i]->pivot = OFFSET_T;
+		stair[i]->collider = COLLIDER::RECT;
+		stair[i]->scale.x = 50.0f;
+		stair[i]->SetLocalPosX(1250.0f);
 		//stair[i]->SetLocalPosY(-app.GetHalfHeight() + 30.0f);
 	}
+
+	wall[1]->SetLocalPosX(2600.0f);
+	wall[1]->SetLocalPosY(30.0f);
+	wall[1]->scale = Vector2(400.0f, app.GetHalfHeight());
+
+	//바닥 객체별로 X좌표 위치, 크기 재설정 해줘야함 :: Y는 동시에해도OK 어차피 다 맨아래 붙어있어서
+	floor[0]->scale.x = app.GetWidth();
+
+	floor[1]->SetLocalPosX(1000.0f);
+	floor[1]->scale.x = 500.0f;
+
+	//floor[2]->SetLocalPosX(2600.0f);
+	floor[2]->SetLocalPosX(2550.0f); //디버그하는데 1캐릭으로 땅에 안닿아서 옮김
+	floor[2]->scale.x = 1500.0f;
+
 	//계단 :: floor1 끝나는 지점부터 생성돼야함
-	blocks[3]->SetLocalPosY(-app.GetHalfHeight() + 80.0f);
-	blocks[3]->scale.y = 180.0f;
+	stair[0]->SetLocalPosY(-app.GetHalfHeight() + 80.0f);
+	stair[0]->scale.y = 180.0f;
 
-	blocks[4]->SetLocalPosX(1300.0f); //시작X에서 0의 x크기만큼 더함
-	blocks[4]->SetLocalPosY(-app.GetHalfHeight() + 130.0f);
-	blocks[4]->scale.y = 180.0f;
+	stair[1]->SetLocalPosX(1300.0f); //시작X에서 0의 x크기만큼 더함
+	stair[1]->SetLocalPosY(-app.GetHalfHeight() + 130.0f);
+	stair[1]->scale.y = 180.0f;
 
-	blocks[5]->SetLocalPosX(1350.0f);
-	blocks[5]->SetLocalPosY(-app.GetHalfHeight() + 180.0f);
-	blocks[5]->scale.y = 180.0f;
+	stair[2]->SetLocalPosX(1350.0f);
+	stair[2]->SetLocalPosY(-app.GetHalfHeight() + 180.0f);
+	stair[2]->scale.y = 180.0f;
 
-	///벽 기본틀
-	for (int i = 6; i < 8; i++)
-	{
-		blocks[i] = new ObImage(L"wall.png");
-		blocks[i]->SetParentRT(*mapBox);
-		blocks[i]->pivot = OFFSET_T;
-		blocks[i]->collider = COLLIDER::RECT;
-		//창크기의 좌측에 맞추기 :: X좌표 = -app.GetHalfWidth().x (480) + scale.x * 0.5f; 
-		blocks[i]->SetLocalPos(Vector2(-465.0f, app.GetHalfHeight()));
-		blocks[i]->scale = Vector2(30.0f, app.GetHeight());
-	}
-
-	blocks[7]->SetLocalPosX(2600.0f);
-	blocks[7]->SetLocalPosY(30.0f);
-	blocks[7]->scale = Vector2(400.0f, app.GetHalfHeight());
-//-------------------------------------------------------------------------------
 	floorLF = new ObImage(L"floor.png");
-	floorLF->SetParentRT(*blocks[2]);
+	floorLF->SetParentRT(*floor[2]);
 	floorLF->pivot = OFFSET_LT;
 	//floorLF->SetLocalPosY(-app.GetHalfHeight() + 30.0f);
 	floorLF->SetLocalPosX(-750.0f);
@@ -98,13 +94,6 @@ Map1::Map1()
 	button->SetWorldPos(Vector2(1900.0f, -app.GetHalfHeight() + 30.0f));
 	button->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
-	liftBox->SetParentRT(*mapBox);
-	liftBox->pivot = OFFSET_B;
-	liftBox->SetLocalPos(Vector2(2300.0f, -240.0f));
-	liftBox->scale = Vector2(200.0f, 270.0f);
-	liftBox->isFilled = false;
-	liftBox->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
-
 	lift = new ObImage(L"floor.png");
 	lift->SetParentRT(*mapBox);
 	lift->collider = COLLIDER::RECT;
@@ -117,7 +106,7 @@ Map1::Map1()
 	door = new ObImage(L"door.png");
 	door->collider = COLLIDER::RECT;
 	door->pivot = OFFSET_B;
-	door->SetParentRT(*blocks[7]);
+	door->SetParentRT(*wall[1]);
 	door->scale = Vector2(95.0f, 93.0f) * 0.7f;
 	//door->SetLocalPosY(app.GetHeight() * 0.5f);
 
@@ -125,7 +114,7 @@ Map1::Map1()
 	doorOP = new ObImage(L"doorOpen.png");
 	doorOP->collider = COLLIDER::RECT;
 	doorOP->pivot = OFFSET_B;
-	doorOP->SetParentRT(*blocks[7]);
+	doorOP->SetParentRT(*wall[1]);
 	doorOP->scale = Vector2(95.0f, 93.0f) * 0.7f;
 	//doorOP->SetLocalPosY(app.GetHeight() * 0.5f);
 	doorOP->visible = false;
@@ -151,15 +140,15 @@ void Map1::Update()
 		doorOP->visible = true;
 		doorOP->colOnOff = true;
 	}
-		
+
 	if (isPress && isOnce)
 	{
 
 		button->scale.y = 4.0f;
 
 		floorLF->MoveWorldPos(LEFT * 100.0f * DELTA);
-		
-		if (floorLF->Intersect(blocks[5]))
+
+		if (floorLF->Intersect(stair[2]))
 		{
 			floorLF->SetWorldPosX(1375.0f);
 
@@ -167,47 +156,55 @@ void Map1::Update()
 		}
 	}
 
-//-------------------------
+	//-------------------------
 	mapBox->Update();
-
-	for (int i = 0; i < BMAX; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		blocks[i]->Update();
+		wall[i]->Update();
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		floor[i]->Update(); //여기서 액세스 위반생김 
+		stair[i]->Update();
 	}
 
 	floorLF->Update();
 	button->Update();
-
 	door->Update();
 	doorOP->Update();
-
 	lift->Update();
-	liftBox->Update();
-
-	key->Update();
 	keyBox->Update();
+	key->Update();
 }
 
 void Map1::Render()
 {
 	mapBox->Render();
 
-	for (int i = 0; i < BMAX; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		blocks[i]->Render();
+		wall[i]->Render();
 	}
-	 
+
+	for (int i = 0; i < 3; i++)
+	{
+		floor[i]->Render();
+		stair[i]->Render();
+	}
+
+	//floor[0]->Render();
+	//floor[1]->Render();
+
+
 	floorLF->Render();
 	button->Render();
-
 	lift->Render();
-	liftBox->Render();
-
+	door->Render();
+	doorOP->Render();
 	key->Render();
 	keyBox->Render();
 
-	door->Render();
-	doorOP->Render();
 
 }
 
@@ -231,38 +228,44 @@ void Map1::stageOpen()
 {
 	mapBox->colOnOff = false;
 
-	for (int i = 0; i < BMAX; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		blocks[i]->colOnOff = true;
+		wall[i]->colOnOff = true;
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		floor[i]->colOnOff = true;
+		stair[i]->colOnOff = true;
 	}
 
 	floorLF->colOnOff = true;
 	button->colOnOff = true;
-
 	door->colOnOff = true;
 	doorOP->colOnOff = false;
-
 	lift->colOnOff = true;
-	liftBox->colOnOff = true;
 }
 
 void Map1::stageClose()
 {
 	mapBox->colOnOff = false;
 
-	for (int i = 0; i < BMAX; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		blocks[i]->colOnOff = false;
+		wall[i]->colOnOff = false;
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		floor[i]->colOnOff = false;
+		stair[i]->colOnOff = false;
 	}
 
 	floorLF->colOnOff = false;
 	button->colOnOff = false;
-
 	door->colOnOff = false;
 	doorOP->colOnOff = false;
-
 	lift->colOnOff = false;
-	liftBox->colOnOff = false;
 
 	door->visible = true;
 	doorOP->visible = false;

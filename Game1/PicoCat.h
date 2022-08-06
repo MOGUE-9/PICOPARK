@@ -20,11 +20,11 @@ class PicoCat
 {
 private:
 	//이미지
-	ObImage*	stand = new ObImage(L"0_stand1.png");
-	ObImage*	walk = new ObImage(L"0_walkSprite.png");
-	ObImage*	push = new ObImage(L"0_pushSprite.png");
-	ObImage*	jump = new ObImage(L"0_jump1.png");
-	
+	ObImage* stand = new ObImage(L"0_stand1.png");
+	ObImage* walk = new ObImage(L"0_walkSprite.png");
+	ObImage* push = new ObImage(L"0_pushSprite.png");
+	ObImage* jump = new ObImage(L"0_jump1.png");
+
 	Vector2		direction;
 	float		gravity;
 
@@ -46,6 +46,11 @@ public:
 
 	//열쇠 소지 여부
 	bool		isHave{ false };
+
+	//리프트 탔는지
+	bool		isLift{ false };
+	//리프트 아래에 있는지
+	bool		underLift{ false };
 
 	//출구로 나갔는지 여부
 	bool		isEnd{ false };

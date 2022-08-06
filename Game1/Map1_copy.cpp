@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-Map1::Map1()
+Map1_copy::Map1_copy()
 {
 	//창크기 박스
 	mapBox->SetWorldPos(Vector2(0.0f, 240.0f));
@@ -17,8 +17,20 @@ Map1::Map1()
 	//key->SetWorldPos(Vector2(2100.0f, 240.0f));
 	key->collider = COLLIDER::RECT;
 
+
 	///블럭셋팅 순서
-	// 0 , 1 , 2 --> floor // 3 , 4 , 5 --> stair // 6 , 7 --> wall
+	// 0 , 1 , 2 --> floor
+	// 3 , 4 , 5 --> stair
+	// 6 , 7 --> wall
+													//for (size_t i = 0; i < BMAX; i++)
+													//{
+													//	blocks[i] = new ObImage(L"wall.png");
+													//	blocks[i]->SetParentRT(*mapBox);
+													//	blocks[i]->pivot = OFFSET_T;
+													//	blocks[i]->collider = COLLIDER::RECT;
+
+													//	//blocks[i]->SetWorldPosY();
+													//}
 
 	// 0 , 1 , 2 --> floor
 	///바닥 기본틀
@@ -32,6 +44,7 @@ Map1::Map1()
 		blocks[i]->scale.y = 30.0f;
 		blocks[i]->SetLocalPosY(-app.GetHalfHeight() + 30.0f);
 	}
+
 	//바닥 객체별로 X좌표 위치, 크기 재설정 해줘야함 :: Y는 동시에해도OK 어차피 다 맨아래 붙어있어서
 	blocks[0]->scale.x = app.GetWidth();
 
@@ -53,7 +66,7 @@ Map1::Map1()
 		blocks[i]->SetLocalPosX(1250.0f);
 		//stair[i]->SetLocalPosY(-app.GetHalfHeight() + 30.0f);
 	}
-	//계단 :: floor1 끝나는 지점부터 생성돼야함
+		//계단 :: floor1 끝나는 지점부터 생성돼야함
 	blocks[3]->SetLocalPosY(-app.GetHalfHeight() + 80.0f);
 	blocks[3]->scale.y = 180.0f;
 
@@ -80,7 +93,8 @@ Map1::Map1()
 	blocks[7]->SetLocalPosX(2600.0f);
 	blocks[7]->SetLocalPosY(30.0f);
 	blocks[7]->scale = Vector2(400.0f, app.GetHalfHeight());
-//-------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------
 	floorLF = new ObImage(L"floor.png");
 	floorLF->SetParentRT(*blocks[2]);
 	floorLF->pivot = OFFSET_LT;
@@ -97,13 +111,6 @@ Map1::Map1()
 	button->pivot = OFFSET_B;
 	button->SetWorldPos(Vector2(1900.0f, -app.GetHalfHeight() + 30.0f));
 	button->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
-
-	liftBox->SetParentRT(*mapBox);
-	liftBox->pivot = OFFSET_B;
-	liftBox->SetLocalPos(Vector2(2300.0f, -240.0f));
-	liftBox->scale = Vector2(200.0f, 270.0f);
-	liftBox->isFilled = false;
-	liftBox->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
 	lift = new ObImage(L"floor.png");
 	lift->SetParentRT(*mapBox);
@@ -134,12 +141,12 @@ Map1::Map1()
 	SOUND->AddSound("button.mp3", "button", false);
 }
 
-Map1::~Map1()
+Map1_copy::~Map1_copy()
 {
 	SafeDelete(mapBox);
 }
 
-void Map1::Update()
+void Map1_copy::Update()
 {
 	//cout << wall[1]->GetWorldPos().y << endl;
 
@@ -151,14 +158,12 @@ void Map1::Update()
 		doorOP->visible = true;
 		doorOP->colOnOff = true;
 	}
-		
+
 	if (isPress && isOnce)
 	{
-
 		button->scale.y = 4.0f;
-
 		floorLF->MoveWorldPos(LEFT * 100.0f * DELTA);
-		
+
 		if (floorLF->Intersect(blocks[5]))
 		{
 			floorLF->SetWorldPosX(1375.0f);
@@ -167,7 +172,7 @@ void Map1::Update()
 		}
 	}
 
-//-------------------------
+	//-------------------------
 	mapBox->Update();
 
 	for (int i = 0; i < BMAX; i++)
@@ -177,18 +182,14 @@ void Map1::Update()
 
 	floorLF->Update();
 	button->Update();
-
 	door->Update();
 	doorOP->Update();
-
 	lift->Update();
-	liftBox->Update();
-
-	key->Update();
 	keyBox->Update();
+	key->Update();
 }
 
-void Map1::Render()
+void Map1_copy::Render()
 {
 	mapBox->Render();
 
@@ -196,22 +197,19 @@ void Map1::Render()
 	{
 		blocks[i]->Render();
 	}
-	 
+
 	floorLF->Render();
 	button->Render();
-
 	lift->Render();
-	liftBox->Render();
-
+	door->Render();
+	doorOP->Render();
 	key->Render();
 	keyBox->Render();
 
-	door->Render();
-	doorOP->Render();
 
 }
 
-void Map1::Pressed()
+void Map1_copy::Pressed()
 {
 	isPress = true;
 	if (!isButton)
@@ -221,13 +219,13 @@ void Map1::Pressed()
 	}
 }
 
-void Map1::openDoor()
+void Map1_copy::openDoor()
 {
 	door->colOnOff = false;
 	isOpen = true;
 }
 
-void Map1::stageOpen()
+void Map1_copy::stageOpen()
 {
 	mapBox->colOnOff = false;
 
@@ -238,15 +236,12 @@ void Map1::stageOpen()
 
 	floorLF->colOnOff = true;
 	button->colOnOff = true;
-
 	door->colOnOff = true;
 	doorOP->colOnOff = false;
-
 	lift->colOnOff = true;
-	liftBox->colOnOff = true;
 }
 
-void Map1::stageClose()
+void Map1_copy::stageClose()
 {
 	mapBox->colOnOff = false;
 
@@ -257,12 +252,9 @@ void Map1::stageClose()
 
 	floorLF->colOnOff = false;
 	button->colOnOff = false;
-
 	door->colOnOff = false;
 	doorOP->colOnOff = false;
-
 	lift->colOnOff = false;
-	liftBox->colOnOff = false;
 
 	door->visible = true;
 	doorOP->visible = false;

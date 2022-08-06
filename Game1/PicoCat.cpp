@@ -11,6 +11,9 @@ PicoCat::PicoCat()
 	col->scale = Vector2(25.0f, 40.0f);
 	col->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
+	col->visible = false;
+	headCol->visible = false;
+
 	headCol-> isFilled = false;
 	headCol->collider = COLLIDER::RECT;
 	headCol->SetParentRT(*col);
@@ -172,7 +175,7 @@ void PicoCat::Update()
 
 		if (stat == CATSTAT::JUMPDOWN)
 		{
-			if (!isJump)
+			if (!isJump && !underLift)
 			{
 				SOUND->Stop("jump");
 				SOUND->Play("jump");

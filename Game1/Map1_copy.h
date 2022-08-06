@@ -1,13 +1,14 @@
 #pragma once
 
+//#define BMAX 8
 
-class Map1
+class Map1_copy
 {
 	//창크기 박스
-	ObRect*		mapBox = new ObRect();
+	ObRect* mapBox = new ObRect();
 	Vector2		liftDir{ DOWN };
 
-	ObRect*		keyBox = new ObRect();
+	ObRect* keyBox = new ObRect();
 
 	bool		isButton{ false }; //버튼 소리 났니
 	bool		isPress{ false }; //버튼 눌렸니
@@ -17,31 +18,37 @@ class Map1
 
 public:
 
-	ObImage* blocks[8];
+	ObImage*	blocks[8];
 
+
+
+	//ObImage*	wall[2];
+	//ObImage*	floor[3];
+	//ObImage*	stair[3];
+	
 	//트리거 맞추면 나오는 바닥 :: MovPos해주고 특정위치가면 멈추도록 해줘야함
-	ObRect*		button;
-	ObImage*	floorLF;
+	ObImage* floorLF;
 
 	//인원수따라 위아래로 움직이는 바닥
-	ObRect*		liftBox = new ObRect();
-	
-	ObImage*	lift;
-	ObImage*	key = new ObImage(L"key.PNG");
+	ObImage* lift;
+	ObImage* key = new ObImage(L"key.PNG");
 
-	ObImage*	door;
-	ObImage*	doorOP;
+
+	ObImage* door;
+	ObImage* doorOP;
 
 public:
 
-	Map1();
-	~Map1();
+	ObRect* button;
+
+	Map1_copy();
+	~Map1_copy();
 
 	void Update();
 	void Render();
 
 	void Pressed();
-	
+
 	void openDoor();
 
 	void stageOpen();

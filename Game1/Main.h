@@ -19,9 +19,7 @@ private:
 	float		camScalar;
 
 	int			pNum;
-	//PicoCat*	player;
 	PicoCat*	player[2];
-
 
 	Map1*		firstMap;
 	bool		isFull; //리프트 인원 체크
