@@ -8,9 +8,10 @@ Map1::Map1()
 	mapBox->isFilled = false;
 	mapBox->colOnOff = false;
 
-	keyBox->scale = Vector2(36.0f, 72.0f) * 0.5f;
+	keyBox->scale = Vector2(40.0f, 75.0f) * 0.5f;
 	keyBox->SetWorldPos(Vector2(2100.0f, 240.0f));
 	keyBox->isFilled = false;
+	keyBox->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
 	key->scale = Vector2(36.0f, 72.0f) * 0.5f;
 	key->SetParentRT(*keyBox);
@@ -63,7 +64,8 @@ Map1::Map1()
 
 	blocks[5]->SetLocalPosX(1350.0f);
 	blocks[5]->SetLocalPosY(-app.GetHalfHeight() + 180.0f);
-	blocks[5]->scale.y = 180.0f;
+	blocks[5]->colOnOff = false;
+	blocks[5]->visible = false;
 
 	///벽 기본틀
 	for (int i = 6; i < 8; i++)
@@ -104,6 +106,7 @@ Map1::Map1()
 	liftBox->scale = Vector2(200.0f, 270.0f);
 	liftBox->isFilled = false;
 	liftBox->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
+	liftBox->visible = false;
 
 	lift = new ObImage(L"floor.png");
 	lift->SetParentRT(*mapBox);
@@ -159,9 +162,11 @@ void Map1::Update()
 
 		floorLF->MoveWorldPos(LEFT * 100.0f * DELTA);
 		
-		if (floorLF->Intersect(blocks[5]))
+		if (floorLF->Intersect(blocks[4]))
 		{
-			floorLF->SetWorldPosX(1375.0f);
+			float bPos = blocks[4]->GetWorldPos().x + blocks[4]->scale.x * 0.5f;
+			floorLF->SetWorldPosX(bPos);
+			//floorLF->SetWorldPosX(1375.0f);
 
 			isOnce = false;
 		}
@@ -235,6 +240,8 @@ void Map1::stageOpen()
 	{
 		blocks[i]->colOnOff = true;
 	}
+	blocks[5]->colOnOff = false;
+
 
 	floorLF->colOnOff = true;
 	button->colOnOff = true;

@@ -4,8 +4,10 @@ enum class CATSTAT
 	STAND,
 	RIGHTPRESS,
 	RIGHTUP,
+	RIGHTPUSH,
 	LEFTPRESS,
 	LEFTUP,
+	LEFTPUSH,
 	JUMPDOWN,
 	JUMPUP,
 
@@ -79,7 +81,11 @@ public:
 	void onWall(float obPosX, float obScaleX);
 	void offWall();
 
+	void StartGame();
 	//스테이지 끝났을 때 대기상태
 	void Endgame();
+
+	void ColorChange(float r, float g, float b);
+
 };
 

@@ -11,8 +11,8 @@ PicoCat::PicoCat()
 	col->scale = Vector2(25.0f, 40.0f);
 	col->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
-	//col->visible = false;
-	//headCol->visible = false;
+	col->visible = false;
+	headCol->visible = false;
 
 	headCol-> isFilled = false;
 	headCol->collider = COLLIDER::RECT;
@@ -78,7 +78,7 @@ void PicoCat::Update()
 	//바닥으로 떨어져도 위에서 자동 리스폰 되게
 	if (col->GetWorldPos().y < -app.GetHalfHeight())
 	{
-		col->SetWorldPosX(col->GetWorldPos().x - 200.0f);
+		col->SetWorldPosX(col->GetWorldPos().x - 400.0f);
 		col->SetWorldPosY(app.GetHalfHeight() + 240.0f);
 	}
 
@@ -142,7 +142,47 @@ void PicoCat::Update()
 			stand->reverseLR = true;
 			walk->reverseLR = true;
 		}
-		else if (stat == CATSTAT::STAND) direction = Vector2(0.0f, 0.0f);
+		else if (stat == CATSTAT::RIGHTPUSH)
+		{
+			direction = RIGHT;
+			//col->MoveWorldPos(RIGHT * 100.0f * DELTA);
+
+			stand->visible = false;
+			jump->visible = false;
+			walk->visible = false;
+
+			push->visible = true;
+
+			push->reverseLR = false;
+			stand->reverseLR = false;
+			walk->reverseLR = false;
+		}
+		//왼쪽으로
+		else if (stat == CATSTAT::LEFTPUSH)
+		{
+			direction = LEFT;
+			//col->MoveWorldPos(LEFT * 100.0f * DELTA);
+
+			stand->visible = false;
+			jump->visible = false;
+			walk->visible = false;
+
+			push->visible = true;
+
+			push->reverseLR = true;
+			stand->reverseLR = true;
+			walk->reverseLR = true;
+		}
+		else if (stat == CATSTAT::STAND)
+		{
+			direction = Vector2(0.0f, 0.0f);
+
+			//push->visible = false;
+			//jump->visible = false;
+			//walk->visible = false;
+
+			//stand->visible = true;
+		}
 
 		//점프중에 움직임 키 뗐을 때 :: 오른쪽
 		if (stat == CATSTAT::RIGHTUP)
@@ -192,11 +232,10 @@ void PicoCat::Update()
 			}
 
 		}
-
 		//키 떼면 점프 1회 판정
 		if (stat == CATSTAT::JUMPUP)
 		{
-			//isJump = true;
+			isJump = true;
 		}
 	}
 
@@ -510,12 +549,35 @@ void PicoCat::offWall()
 	isWall = false;
 }
 
+void PicoCat::StartGame()
+{
+	col->colOnOff = true;
+	headCol->colOnOff = true;
+}
+
 void PicoCat::Endgame()
 {
 	col->SetWorldPos(Vector2(2600.0f, 270.0f));
+
+	col->colOnOff = false;
+	headCol->colOnOff = false;
+
 	stand->visible = false;
 	walk->visible = false;
 	push->visible = false;
 	jump->visible = false;
+}
+
+void PicoCat::ColorChange(float r, float g, float b)
+{
+	stand->color = Color(r, g, b, 0.5f);
+	walk->color = Color(r, g, b, 0.5f);
+	push->color = Color(r, g, b, 0.5f);
+	jump->color = Color(r, g, b, 0.5f);
+
+	//stand = new ObImage(L"1_stand1.png");
+	//walk = new ObImage(L"1_walkSprite.png");
+	//push = new ObImage(L"1_pushSprite.png");
+	//jump = new ObImage(L"1_jump1.png");
 }
 

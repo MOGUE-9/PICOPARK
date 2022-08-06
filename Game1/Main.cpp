@@ -15,8 +15,14 @@ void Main::Init()
 	for (int i = 0; i < pNum; i++)
 	{
 		player[i] = new PicoCat();
-		player[i]->col->SetWorldPosX(100.0f - 200.0f * i);
+		//player[i]->col->SetWorldPosX(100.0f - 200.0f * i);
 	}
+	player[0]->col->SetWorldPosX(100.0f);
+
+	player[1]->col->SetWorldPosX(-100.0f);
+	player[1]->ColorChange(0.5f, 0.5f, 0.8f);
+
+	//player[1]->ColorChange();
 	
 	SOUND->AddSound("01Spring.mp3", "title", true);
 	SOUND->SetVolume("title", 0.1f);
@@ -39,6 +45,7 @@ void Main::Release()
 
 void Main::Update()
 {
+
 	//ImGuiColorEditFlags
 	//ImGui::ColorEdit4("d", (float*)&block->color, ImGuiColorEditFlags_PickerHueWheel);
 
@@ -129,114 +136,17 @@ void Main::Update()
 	}
 #endif
 
-	//플레이어[0] 
-	if (player[0]->col->Intersect(player[1]->headCol))
-	{
-		cout << "몸-머리 충돌" << endl;
-		//몸통주인이 머리주인 밟고 서기
-		//정수리 위치
-		float headP = player[1]->headCol->GetWorldPos().y + player[1]->headCol->scale.y;
-		player[0]->onBlock(headP);
-	}
-	//머리-머리 충돌
-	else if (player[0]->headCol->Intersect(player[1]->headCol))
-	{
-		cout << "머-머리 충돌" << endl;
-
-		// [0]을 조작하고 있으니까, 이 키입력이 있을때만 여기 들어오게 ...
-		if (INPUT->KeyPress(VK_LEFT) || INPUT->KeyPress(VK_RIGHT))
-		{
-			//내가 좌측
-			if (player[0]->col->GetWorldPos().x < player[1]->headCol->GetWorldPos().x)
-			{
-				// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
-				int wallOn = player[1]->headCol->GetWorldPos().x - player[1]->headCol->scale.x * 0.5f - 23.0f;
-
-				//충돌대상자 위치
-				float Ipos = player[1]->col->GetWorldPos().x;
-
-				//player[i]->col->SetWorldPosX(Ipos);
-				player[0]->col->SetWorldPosX(wallOn);
-				//break;
-			}
-			//내가 벽 우측
-			else if (player[0]->col->GetWorldPos().x > player[1]->headCol->GetWorldPos().x)
-			{
-				int wallOn = player[1]->headCol->GetWorldPos().x + player[1]->headCol->scale.x * 0.5f + 23.0f;
-				//충돌대상자 위치
-				float Ipos = player[1]->col->GetWorldPos().x;
-
-				//player[i]->col->SetWorldPosX(Ipos);
-				player[0]->col->SetWorldPosX(wallOn);
-				//break;
-			}
-		}
-	}
-	for (int j = 0; j < pNum; j++)
-	{
-		player[j]->Update();
-	}
-
-	//for (int j = 0; j < pNum; j++)
-	//{
-	//	int i = 1 - j;
-	//	//몸통-머리 충돌
-	//	if (player[j]->col->Intersect(player[i]->headCol))
-	//	{
-	//		//몸통주인이 머리주인 밟고 서기
-	//		player[j]->onBlock(player[i]->headCol->GetWorldPos().y);
-	//	}
-	//	//머리-머리 충돌
-	//	else if (player[j]->headCol->Intersect(player[i]->headCol))
-	//	{
-	//		cout << "대가리 충돌" << endl;
-	//		//내가 좌측
-	//		if (player[j]->col->GetWorldPos().x < player[i]->headCol->GetWorldPos().x)
-	//		{
-	//			// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
-	//			int wallOn = player[i]->headCol->GetWorldPos().x - player[i]->headCol->scale.x * 0.5f - 22.0f;
-
-	//			//충돌대상자 위치
-	//			float Ipos = player[i]->col->GetWorldPos().x;
-
-	//			//player[i]->col->SetWorldPosX(Ipos);
-	//			player[j]->col->SetWorldPosX(wallOn);
-	//			//break;
-	//		}
-	//		//내가 벽 우측
-	//		else if (player[j]->col->GetWorldPos().x > player[i]->headCol->GetWorldPos().x)
-	//		{
-	//			int wallOn = player[i]->headCol->GetWorldPos().x + player[i]->headCol->scale.x * 0.5f + 22.0f;
-	//			//충돌대상자 위치
-	//			float Ipos = player[i]->col->GetWorldPos().x;
-
-	//			//player[i]->col->SetWorldPosX(Ipos);
-	//			player[j]->col->SetWorldPosX(wallOn);
-	//			//break;
-	//		}
-	//	}
-	//	//if (player[j]->headCol->Intersect(player[i]->headCol))
-	//	//{
-	//	//	{
-	//	//		player[j]->offBlock();
-	//	//		player[j]->offWall();
-	//	//	}
-	//	//}
-	//	player[j]->Update();
-	//}
-
-
 	if (stage == STAGE::TITLE)
 	{
 		camScalar = 0.0f;
 
 		for (int i = 0; i < pNum; i++)
 		{
-			player[i]->scalar = 100.0f;
+			player[i]->scalar = 150.0f;
 		}
 
 		SOUND->Stop("Stage1");
-		//SOUND->Play("title");
+		SOUND->Play("title");
 
 	///문열기-----------------------------------------------
 		// P1 랑 닫힌문 door과 intersect 체크
@@ -288,15 +198,17 @@ void Main::Update()
 			for (int j = 0; j < pNum; j++)
 			{
 				player[j]->isEnd = false;
-				player[j]->col->SetWorldPosX(100.0f - 200.0f * j);
+				player[j]->StartGame();
+				//player[j]->col->SetWorldPosX(100.0f - 200.0f * j);
 			}
+			player[0]->col->SetWorldPos(Vector2(100.0f, 0.0f));
+			player[1]->col->SetWorldPos(Vector2(-100.0f, 0.0f));
 
 			titleMap->stageClose();
 			firstMap->stageOpen();
 
 			stage = STAGE::ST_1;
 		}
-
 	}
 
 	if (stage == STAGE::ST_1)
@@ -309,7 +221,7 @@ void Main::Update()
 		}
 
 		SOUND->Stop("title");
-		//SOUND->Play("Stage1");
+		SOUND->Play("Stage1");
 
 	///리프트------------------------------------------------------------------
 		if (player[0]->isLift && player[1]->isLift)
@@ -400,8 +312,11 @@ void Main::Update()
 			{
 				player[j]->isHave = false;
 				player[j]->isEnd = false;
-				player[j]->col->SetWorldPosX(100.0f - 200.0f * j);
+				player[j]->StartGame();
+				//player[j]->col->SetWorldPosX(100.0f - 200.0f * j);
 			}
+			player[0]->col->SetWorldPos(Vector2(100.0f, 0.0f));
+			player[1]->col->SetWorldPos(Vector2(-100.0f, 0.0f));
 
 			firstMap->stageClose();
 			isKey = false;
@@ -443,7 +358,18 @@ void Main::Update()
 			}
 		}
 
-
+		/// <<로 이동하는 바닥
+		for (int j = 0; j < pNum; j++)
+		{
+			if (player[j]->col->Intersect(firstMap->floorLF))
+			{
+				player[j]->onBlock(firstMap->floorLF->GetWorldPos().y);
+			}
+			else
+			{
+				player[j]->offBlock();
+			}
+		}
 	}
 
 	for (int i = 0; i < pNum; i++)
@@ -458,8 +384,97 @@ void Main::Update()
 void Main::LateUpdate()
 {
 	//플레이어 끼리 충돌
+			///플레이어 충돌
+#if 1
+	///플레이어[0] 
+	if (player[0]->col->Intersect(player[1]->headCol))
+	{
+		//몸통주인이 머리주인 밟고 서기
+		//정수리 위치
+		float headP = player[1]->headCol->GetWorldPos().y + player[1]->headCol->scale.y;
+		player[0]->onBlock(headP);
+	}
+	//머리-머리 충돌
+	else if (player[0]->headCol->Intersect(player[1]->headCol))
+	{
+		// [0]을 조작하고 있으니까, 이 키입력이 있을때만 여기 들어오게 ...
+		if (INPUT->KeyPress(VK_LEFT) || INPUT->KeyPress(VK_RIGHT))
+		{
+			//내가 좌측
+			if (player[0]->col->GetWorldPos().x < player[1]->headCol->GetWorldPos().x)
+			{
+				//player[0]->stat = CATSTAT::RIGHTPUSH;
+				// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
+				int wallOn = player[1]->headCol->GetWorldPos().x - player[1]->headCol->scale.x * 0.5f - 23.0f;
 
+				//충돌대상자 위치
+				float Ipos = player[1]->col->GetWorldPos().x;
 
+				//player[i]->col->SetWorldPosX(Ipos);
+				player[0]->col->SetWorldPosX(wallOn);
+				//break;
+			}
+			//내가 벽 우측
+			else if (player[0]->col->GetWorldPos().x > player[1]->headCol->GetWorldPos().x)
+			{
+				//player[0]->stat = CATSTAT::LEFTPUSH;
+
+				int wallOn = player[1]->headCol->GetWorldPos().x + player[1]->headCol->scale.x * 0.5f + 23.0f;
+				//충돌대상자 위치
+				float Ipos = player[1]->col->GetWorldPos().x;
+
+				//player[i]->col->SetWorldPosX(Ipos);
+				player[0]->col->SetWorldPosX(wallOn);
+				//break;
+			}
+		}
+	}
+	///플레이어[1] 
+	if (player[1]->col->Intersect(player[0]->headCol))
+	{
+		//몸통주인이 머리주인 밟고 서기
+		//정수리 위치
+		float headP = player[0]->headCol->GetWorldPos().y + player[0]->headCol->scale.y;
+		player[1]->onBlock(headP);
+	}
+	//머리-머리 충돌
+	else if (player[1]->headCol->Intersect(player[0]->headCol))
+	{
+		// [0]을 조작하고 있으니까, 이 키입력이 있을때만 여기 들어오게 ...
+		if (INPUT->KeyPress('A') || INPUT->KeyPress('D'))
+		{
+			//내가 좌측
+			if (player[1]->col->GetWorldPos().x < player[0]->headCol->GetWorldPos().x)
+			{
+				// 내 scale *0.5 ..인데! 왜 24냐면 애니메이션 때문에 줄임
+				int wallOn = player[0]->headCol->GetWorldPos().x - player[0]->headCol->scale.x * 0.5f - 23.0f;
+
+				//충돌대상자 위치
+				float Ipos = player[0]->col->GetWorldPos().x;
+
+				//player[i]->col->SetWorldPosX(Ipos);
+				player[1]->col->SetWorldPosX(wallOn);
+				//break;
+			}
+			//내가 벽 우측
+			else if (player[1]->col->GetWorldPos().x > player[0]->headCol->GetWorldPos().x)
+			{
+				int wallOn = player[0]->headCol->GetWorldPos().x + player[0]->headCol->scale.x * 0.5f + 23.0f;
+				//충돌대상자 위치
+				float Ipos = player[0]->col->GetWorldPos().x;
+
+				//player[i]->col->SetWorldPosX(Ipos);
+				player[1]->col->SetWorldPosX(wallOn);
+				//break;
+			}
+		}
+	}
+	for (int i = 0; i < pNum; i++)
+	{
+		player[i]->Update();
+	}
+#endif
+		
 	///타이틀
 	if (stage == STAGE::TITLE)
 	{
@@ -493,8 +508,6 @@ void Main::LateUpdate()
 		CAM->position.x = Utility::Saturate(CAM->position.x, 0.0f, 2320.0f);
 		//CAM->position.x = Utility::Saturate(CAM->position.x, 0.0f, 2000.0f);
 
-		//다인 코드
-		
 		//우측 맵 끝에 닿았을때 더 못가게 막는 update					// 960*0.5  = -480 + 30 + 내scale*0.5
 		for (int i = 0; i < pNum; i++)
 		{
@@ -538,20 +551,6 @@ void Main::LateUpdate()
 			firstMap->button->Update();
 		}
 
-		/// <<로 이동하는 바닥
-		for (int j = 0; j < pNum; j++)
-		{
-			if (player[j]->col->Intersect(firstMap->floorLF))
-			{
-				player[j]->onBlock(firstMap->floorLF->GetWorldPos().y);
-			}
-			else
-			{
-				player[j]->offBlock();
-			}
-			player[j]->Update();
-		}
-
 		///리프트 밟기
 		for (int j = 0; j < pNum; j++)
 		{
@@ -562,7 +561,6 @@ void Main::LateUpdate()
 				if (firstMap->lift->GetWorldPos().y + 5.0f > player[j]->col->GetWorldPos().y
 					&& firstMap->lift->GetWorldPos().y - firstMap->lift->scale.y < player[j]->col->GetWorldPos().y)
 				{
-					cout << j << " 루 ㅣ프트 " << endl;
 					player[j]->onBlock(firstMap->lift->GetWorldPos().y);
 					player[j]->isLift = true;
 
@@ -570,19 +568,16 @@ void Main::LateUpdate()
 					{
 						if (INPUT->KeyPress(VK_UP))
 						{
-							cout << 0 << " ㄴㄴ 루 ㅣ프트 " << endl;
 							player[0]->offBlock();
 							player[0]->isLift = false;
 						}
 						if (INPUT->KeyPress('W'))
 						{
-							cout << 1 << " ㄴㄴ 루 ㅣ프트 " << endl;
 							player[1]->offBlock();
 							player[1]->isLift = false;
 						}
 					}
 					player[j]->underLift = false;
-					//player[j]->Update();
 				}
 				else
 				{
@@ -637,7 +632,6 @@ void Main::LateUpdate()
 
 			firstMap->lift->Update();
 		}
-
 		///모든 바닥 벽 계단
 		for (int j = 0; j < pNum; j++)
 		{
@@ -666,11 +660,6 @@ void Main::LateUpdate()
 						player[j]->col->SetWorldPosX(wallOn);
 					}
 				}
-				//else
-				//{
-				//	player[j]->offBlock();
-				//	player[j]->offWall();
-				//}
 			}
 			player[j]->Update();
 		}
