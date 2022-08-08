@@ -142,37 +142,37 @@ void PicoCat::Update()
 			stand->reverseLR = true;
 			walk->reverseLR = true;
 		}
-		else if (stat == CATSTAT::RIGHTPUSH)
-		{
-			direction = RIGHT;
-			//col->MoveWorldPos(RIGHT * 100.0f * DELTA);
+		//else if (stat == CATSTAT::RIGHTPUSH)
+		//{
+		//	direction = RIGHT;
+		//	//col->MoveWorldPos(RIGHT * 100.0f * DELTA);
 
-			stand->visible = false;
-			jump->visible = false;
-			walk->visible = false;
+		//	stand->visible = false;
+		//	jump->visible = false;
+		//	walk->visible = false;
 
-			push->visible = true;
+		//	push->visible = true;
 
-			push->reverseLR = false;
-			stand->reverseLR = false;
-			walk->reverseLR = false;
-		}
-		//¿ÞÂÊÀ¸·Î
-		else if (stat == CATSTAT::LEFTPUSH)
-		{
-			direction = LEFT;
-			//col->MoveWorldPos(LEFT * 100.0f * DELTA);
+		//	push->reverseLR = false;
+		//	stand->reverseLR = false;
+		//	walk->reverseLR = false;
+		//}
+		////¿ÞÂÊÀ¸·Î
+		//else if (stat == CATSTAT::LEFTPUSH)
+		//{
+		//	direction = LEFT;
+		//	//col->MoveWorldPos(LEFT * 100.0f * DELTA);
 
-			stand->visible = false;
-			jump->visible = false;
-			walk->visible = false;
+		//	stand->visible = false;
+		//	jump->visible = false;
+		//	walk->visible = false;
 
-			push->visible = true;
+		//	push->visible = true;
 
-			push->reverseLR = true;
-			stand->reverseLR = true;
-			walk->reverseLR = true;
-		}
+		//	push->reverseLR = true;
+		//	stand->reverseLR = true;
+		//	walk->reverseLR = true;
+		//}
 		else if (stat == CATSTAT::STAND)
 		{
 			direction = Vector2(0.0f, 0.0f);

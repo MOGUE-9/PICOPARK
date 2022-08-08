@@ -7,11 +7,13 @@ Map1::Map1()
 	mapBox->scale = Vector2(app.GetWidth(), app.GetHeight());
 	mapBox->isFilled = false;
 	mapBox->colOnOff = false;
+	mapBox->visible = false;
 
 	keyBox->scale = Vector2(40.0f, 75.0f) * 0.5f;
 	keyBox->SetWorldPos(Vector2(2100.0f, 240.0f));
 	keyBox->isFilled = false;
 	keyBox->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
+	keyBox->visible = false;
 
 	key->scale = Vector2(36.0f, 72.0f) * 0.5f;
 	key->SetParentRT(*keyBox);

@@ -7,6 +7,7 @@ Title::Title()
 	mapBox->scale = Vector2(app.GetWidth(), app.GetHeight());
 	mapBox->isFilled = false;
 	mapBox->colOnOff = false;
+	mapBox->visible = false;
 
 	//타이틀 이름
 	name = new ObImage(L"title.png");
